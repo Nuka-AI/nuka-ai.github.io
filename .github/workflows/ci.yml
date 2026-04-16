@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 5 * * *' # This runs the build automatically every day at 5:00 AM UTC
 permissions:
   contents: write
 jobs:
@@ -15,9 +17,4 @@ jobs:
           python-version: 3.x
       - run: pip install -r requirements.txt
       - run: mkdocs gh-deploy --force
-on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '0 5 * * *' # This runs the build automatically every day at 5:00 AM UTC
+
