@@ -4,12 +4,23 @@ site_url: https://nuka-ai.github.io
 theme:
   name: material
   palette:
-    scheme: slate # Default dark mode for that security vibe
-    primary: indigo
+    # DARK MODE (Vault Terminal)
+    - scheme: slate
+      primary: red # Nuka-Cola Red
+      accent: orange # Radiation/Rust Accent
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    # LIGHT MODE (Optional)
+    - scheme: default
+      primary: red
+      accent: orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
   features:
     - navigation.tabs
-    - content.code.copy # Essential for sharing exploit snippets
-  logo: assets/hero.png # This adds your hero image to the sidebar/nav
+    - content.code.copy
 
 plugins:
   - search
