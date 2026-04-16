@@ -5,30 +5,25 @@ theme:
   name: material
   logo: assets/hero.png
   favicon: assets/hero.png
-  
   palette:
-    # DARK MODE (The Terminal Aesthetic)
     - scheme: slate
       primary: black
       accent: red
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
-    # LIGHT MODE (Fallback)
     - scheme: default
       primary: black
       accent: red
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
-
   features:
     - navigation.tabs
     - navigation.top
     - content.code.copy
     - search.suggest
     - search.highlight
-
   font:
     text: Roboto
     code: Roboto Mono
@@ -36,14 +31,9 @@ theme:
 plugins:
   - search
   - blog:
-      enabled: true
       blog_dir: posts
-      # Ensure your files are actually in docs/posts/
-      post_dir: posts 
-      # THE LOCKDOWN
+      post_dir: posts
       draft_if_future_date: true
-      # Optional: set this to -4 for EDT to ensure local time sync
-      archive_format: MMMM YYYY
       pagination_per_page: 5
 
 extra:
