@@ -1,5 +1,6 @@
 site_name: Nuka AI Research Series
 site_url: https://nuka-ai.github.io
+docs_dir: docs
 
 theme:
   name: material
@@ -24,9 +25,6 @@ theme:
     - content.code.copy
     - search.suggest
     - search.highlight
-  font:
-    text: Roboto
-    code: Roboto Mono
 
 plugins:
   - search
