@@ -12,7 +12,6 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
-    - navigation.top
 
 plugins:
   - search
@@ -20,14 +19,12 @@ plugins:
       blog_dir: posts
       post_dir: posts
       draft_if_future_date: true
-  - minify:
-      minify_html: true
-  - rss:
-      abstract_chars_count: 160
+
+nav:
+  - Home: index.md
+  - Research Logs: blog
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
-    - icon: fontawesome/solid/paper-plane
-      link: mailto:Nuka.AI@proton.me
