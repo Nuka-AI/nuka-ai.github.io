@@ -27,7 +27,7 @@ plugins:
 
 nav:
   - Home: index.md
-  - Research Logs: posts/
+  - Research Logs: posts/index.md
 
 extra:
   social:
