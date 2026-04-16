@@ -17,8 +17,10 @@ Welcome to the central research hub for the **Nuka AI Research Series**. This in
 
 | | |
 | :--- | :--- |
-| ![Research 1](assets/project-1.png) | **Classified: Orchestration Persistence**<br>Status: `[RESTRICTED ACCESS]`<br>Analysis of long-running session vulnerabilities and RCE vectors. |
-| ![Research 2](assets/project-2.png) | **Classified: Enterprise SDK Exploitation**<br>Status: `[DECRYPTION IN PROGRESS]`<br>Deep-dives into trust boundaries within LLM-integrated applications. |
+| ![Research 1](assets/project-1-rusted.png) | **Classified: Orchestration Persistence**<br>Status: `[RESTRICTED ACCESS]`<br>Analysis of long-running session vulnerabilities and RCE vectors. |
+| ![Research 2](assets/project-2-rusted.png) | **Classified: Enterprise SDK Exploitation**<br>Status: `[DECRYPTION IN PROGRESS]`<br>Deep-dives into trust boundaries within LLM-integrated applications. |
+| ![Research 2](assets/project-3-rusted.png) | **Classified: Enterprise SDK Exploitation**<br>Status: `[DECRYPTION IN PROGRESS]`<br>Deep-dives into trust boundaries within LLM-integrated applications. |
+| ![Research 2](assets/project-4-rusted.png) | **Classified: Enterprise SDK Exploitation**<br>Status: `[DECRYPTION IN PROGRESS]`<br>Deep-dives into trust boundaries within LLM-integrated applications. |
 
 ---
 
