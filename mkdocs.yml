@@ -34,7 +34,7 @@ plugins:
       blog_dir: posts
       post_dir: posts
       draft_if_future_date: true
-      pagination_per_page: 5
+      pagination: false
 
 extra:
   social:
