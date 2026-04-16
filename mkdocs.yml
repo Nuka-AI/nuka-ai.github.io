@@ -5,12 +5,8 @@ docs_dir: docs
 theme:
   name: material
   logo: assets/hero.png
-  favicon: assets/hero.png
   palette:
     - scheme: slate
-      primary: black
-      accent: red
-    - scheme: default
       primary: black
       accent: red
   features:
@@ -21,19 +17,17 @@ theme:
 plugins:
   - search
   - blog:
-      blog_dir: posts   # This makes the URL /posts/
-      post_dir: posts   # This looks in docs/posts/
+      blog_dir: posts
+      post_dir: posts
       draft_if_future_date: true
   - minify:
       minify_html: true
   - rss:
       abstract_chars_count: 160
 
-nav:
-  - Home: index.md
-  - Research Logs: blog  # THIS IS THE MAGIC WORD
-
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:Nuka.AI@proton.me
