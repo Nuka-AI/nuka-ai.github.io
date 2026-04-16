@@ -1,6 +1,7 @@
 ---
 hide:
   - navigation
+date: 2026-04-16
 ---
 
 # The Nuka AI Research Series
