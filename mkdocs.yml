@@ -4,13 +4,31 @@ docs_dir: docs
 
 theme:
   name: material
+  logo: assets/hero.png
   palette:
-    scheme: slate
-    primary: black
-    accent: red
+    - scheme: slate
+      primary: black
+      accent: red
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
 
 plugins:
   - search
+  - blog:
+      blog_dir: posts
+      post_dir: posts
+      # Keeps your July disclosures hidden until their release date
+      draft_if_future_date: true 
 
 nav:
   - Home: index.md
+  - Research Logs: blog
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Nuka-AI
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:Nuka.AI@proton.me
