@@ -17,8 +17,8 @@ Welcome to the central research hub for the **Nuka AI Research Series**. This in
 
 | | |
 | :--- | :--- |
-| ![Research 1](assets/project-1.png) | **Classified: Orchestration Persistence**<br>Analyzing how leading AI frameworks handle long-running sessions and potential RCE vectors. |
-| ![Research 2](assets/project-2.png) | **Classified: Enterprise SDK Exploitation**<br>Deep-dives into trust boundaries within LLM-integrated applications and natural language routing. |
+| ![Research 1](assets/nuka-ai-blured-logo.png) | **Classified: Orchestration Persistence**<br>Analyzing how leading AI frameworks handle long-running sessions and potential RCE vectors. |
+| ![Research 2](assets/nuka-ai-blured-logo.png) | **Classified: Enterprise SDK Exploitation**<br>Deep-dives into trust boundaries within LLM-integrated applications and natural language routing. |
 
 ---
 
