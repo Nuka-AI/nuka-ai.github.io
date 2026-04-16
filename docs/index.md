@@ -9,7 +9,7 @@ hide:
 
 ## Investigating Security in AI Orchestration Frameworks
 
-Welcome to the central research hub for the **Nuka AI Research Series**. This initiative, led by **JDP Security**, focuses on identifying critical vulnerabilities and architectural trust gaps in modern AI systems.
+Welcome to the central research hub for the **Nuka AI Research Series**. This initiative, led by **JDP Security**, focuses on identifying architectural trust gaps and critical persistence vectors in modern AI ecosystems.
 
 ---
 
@@ -17,17 +17,17 @@ Welcome to the central research hub for the **Nuka AI Research Series**. This in
 
 | | |
 | :--- | :--- |
-| ![Research 1](assets/project-1.png) | **AI Framework Persistence**<br>Analyzing how orchestration layers handle long-running sessions and potential RCE vectors. |
-| ![Research 2](assets/project-2.png) | **Enterprise AI SDK Exploitation**<br>Deep-dives into trust boundaries within LLM-integrated applications and semantic execution. |
+| ![Research 1](assets/project-1.png) | **Classified: Orchestration Persistence**<br>Analyzing how leading AI frameworks handle long-running sessions and potential RCE vectors. |
+| ![Research 2](assets/project-2.png) | **Classified: Enterprise SDK Exploitation**<br>Deep-dives into trust boundaries within LLM-integrated applications and natural language routing. |
 
 ---
 
 ### 📅 July 2026 Disclosure Timeline
-Technical white papers will be released on the following schedule:
+Technical white papers are currently under **Restricted Access**. Public release is scheduled for:
 
 * **July 14:** Critical RCE in Popular AI Orchestration Layer
-* **July 16:** Architectural Vulnerabilities in Multi-Agent Framework
-* **July 21:** Enterprise AI Trust Gap Analysis
-* **July 23:** Remote Execution Vectors in Semantic Routing
+* **July 16:** Architectural Vulnerability in Multi-Agent Framework
+* **July 21:** Enterprise AI Data-Connector Trust Gap
+* **July 23:** Remote Execution Vector in Orchestration Logic
 
 **Contact:** [Nuka.AI@proton.me](mailto:Nuka.AI@proton.me) | [JDP.Sec@proton.me](mailto:JDP.Sec@proton.me)
