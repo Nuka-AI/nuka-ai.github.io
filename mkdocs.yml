@@ -1,0 +1,23 @@
+site_name: Nuka AI Research Series
+site_url: https://nuka-ai.github.io
+
+theme:
+  name: material
+  palette:
+    scheme: slate # Default dark mode for that security vibe
+    primary: indigo
+  features:
+    - navigation.tabs
+    - content.code.copy # Essential for sharing exploit snippets
+  logo: assets/hero.png # This adds your hero image to the sidebar/nav
+
+plugins:
+  - search
+  - blog:
+      draft_if_future_date: true # THE LOCKDOWN: Hidden until the date hits
+      post_dir: docs/posts # Where your July write-ups will live
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Nuka-AI
