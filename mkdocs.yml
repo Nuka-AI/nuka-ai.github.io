@@ -21,6 +21,8 @@ theme:
   features:
     - navigation.tabs
     - content.code.copy
+  font:
+    code: Roboto Mono
 
 plugins:
   - search
