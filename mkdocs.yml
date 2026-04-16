@@ -18,8 +18,7 @@ plugins:
   - search
   - blog:
       blog_dir: posts
-      post_dir: posts
-      # Keeps your July disclosures hidden until their release date
+      # Removing post_dir helps the plugin auto-detect the structure
       draft_if_future_date: true 
 
 nav:
@@ -30,5 +29,3 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
-    - icon: fontawesome/solid/paper-plane
-      link: mailto:Nuka.AI@proton.me
