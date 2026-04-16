@@ -11,11 +11,6 @@ theme:
 
 plugins:
   - search
-  - blog:
-      blog_dir: posts
-      post_dir: posts
 
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/Nuka-AI
+nav:
+  - Home: index.md
