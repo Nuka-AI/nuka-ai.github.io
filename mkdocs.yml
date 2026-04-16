@@ -16,16 +16,16 @@ theme:
 
 plugins:
   - search
-  - blog:
-      blog_dir: posts
-      post_dir: posts
-      draft_if_future_date: true 
 
 nav:
   - Home: index.md
-  - Research Logs: blog
+  - Research Logs: 
+    - Overview: posts/init.md
+    - July 14 Disclosure: posts/2026-07-14-initial-disclosure.md
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:Nuka.AI@proton.me
