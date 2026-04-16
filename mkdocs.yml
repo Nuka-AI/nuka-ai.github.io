@@ -5,38 +5,27 @@ docs_dir: docs
 theme:
   name: material
   logo: assets/hero.png
-  favicon: assets/hero.png
   palette:
     - scheme: slate
       primary: black
       accent: red
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-    - scheme: default
-      primary: black
-      accent: red
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
   features:
     - navigation.tabs
-    - navigation.top
-    - content.code.copy
-    - search.suggest
-    - search.highlight
 
 plugins:
   - search
   - blog:
-      blog_dir: posts
-      post_dir: posts
+      # This forces the plugin to ONLY look in docs/posts/
+      post_dir: posts 
       draft_if_future_date: true
       pagination: false
+
+# This explicitly tells MkDocs which files are part of your site
+nav:
+  - Home: index.md
+  - Research Logs: posts/
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
-    - icon: fontawesome/solid/paper-plane
-      link: mailto:Nuka.AI@proton.me
