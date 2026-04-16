@@ -4,25 +4,16 @@ docs_dir: docs
 
 theme:
   name: material
-  logo: assets/hero.png
   palette:
-    - scheme: slate
-      primary: black
-      accent: red
-  features:
-    - navigation.tabs
-    - navigation.sections
+    scheme: slate
+    primary: black
+    accent: red
 
 plugins:
   - search
   - blog:
       blog_dir: posts
       post_dir: posts
-      draft_if_future_date: true
-
-nav:
-  - Home: index.md
-  - Research Logs: blog
 
 extra:
   social:
