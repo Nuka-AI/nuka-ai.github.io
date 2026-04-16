@@ -6,21 +6,25 @@ theme:
   name: material
   logo: assets/hero.png
   palette:
+    # Dark mode / High-contrast "Nuka" aesthetic
     - scheme: slate
       primary: black
       accent: red
   features:
     - navigation.tabs
+    - navigation.sections
+    - navigation.top
 
 plugins:
   - search
   - blog:
-      # This forces the plugin to ONLY look in docs/posts/
-      post_dir: posts 
-      draft_if_future_date: true
-      pagination: false
+      # This fixes the 404 by telling the plugin your blog lives at /posts/
+      blog_dir: posts   
+      post_dir: posts   
+      # Ensures July disclosures stay hidden until the release date
+      draft_if_future_date: true 
+      pagination_per_page: 5
 
-# This explicitly tells MkDocs which files are part of your site
 nav:
   - Home: index.md
   - Research Logs: posts/
