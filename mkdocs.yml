@@ -3,34 +3,49 @@ site_url: https://nuka-ai.github.io
 
 theme:
   name: material
+  # Putting your bottlecap logo in the top-left header
+  logo: assets/hero.png
+  favicon: assets/hero.png
+  
   palette:
-    # DARK MODE (Vault Terminal)
+    # DARK MODE (The Terminal Aesthetic)
     - scheme: slate
-      primary: red # Nuka-Cola Red
-      accent: orange # Radiation/Rust Accent
+      primary: black   # Changes the header bar to dark terminal grey/black
+      accent: red     # Nuka-Cola red for links, buttons, and hover states
       toggle:
         icon: material/weather-night
-        name: Switch to light mode
-    # LIGHT MODE (Optional)
+        name: Switch to dark mode
+    # LIGHT MODE (Fallback)
     - scheme: default
-      primary: red
-      accent: orange
+      primary: black
+      accent: red
       toggle:
         icon: material/weather-sunny
-        name: Switch to dark mode
+        name: Switch to light mode
+
   features:
     - navigation.tabs
-    - content.code.copy
+    - navigation.top
+    - content.code.copy  # Critical for exploit research snippets
+    - search.suggest
+    - search.highlight
+
   font:
-    code: Roboto Mono
+    text: Roboto
+    code: Roboto Mono # Monospaced font for that "terminal" feel
 
 plugins:
   - search
   - blog:
-      draft_if_future_date: true # THE LOCKDOWN: Hidden until the date hits
-      post_dir: docs/posts # Where your July write-ups will live
+      blog_dir: posts
+      post_dir: docs/posts
+      # THE LOCKDOWN: Content with future dates will NOT be published
+      draft_if_future_date: true 
+      pagination_per_page: 5
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:Nuka.AI@proton.me
