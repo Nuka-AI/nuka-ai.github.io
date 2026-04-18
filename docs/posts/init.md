@@ -3,4 +3,4 @@ date: 2026-04-16
 ---
 # Research Series Initiated
 
-Initial setup for the Nuka-AI disclosure series.
+Bridging the trust gap in AI security research through transparent, evidence-based disclosure.
