@@ -3,13 +3,13 @@ hide:
   - navigation
 ---
 
-# The Nuka AI Research Series
+# Nuka-AI: AI Orchestration Research Series
 
 ![Nuka-AI Research](assets/hero.png)
 
-## Investigating Security in AI Orchestration Frameworks
+## Investigating Security Trust Gaps in AI Frameworks
 
-Welcome to the central research hub for the **Nuka AI Research Series**. This initiative, led by **JDP Security**, focuses on identifying architectural trust gaps and critical persistence vectors in modern AI ecosystems.
+Welcome to the central research hub for the **Nuka-AI Research Series**. This initiative, led by **JDP Security**, focuses on identifying architectural trust gaps and critical persistence vectors in modern AI ecosystems.
 
 ---
 
@@ -17,20 +17,22 @@ Welcome to the central research hub for the **Nuka AI Research Series**. This in
 
 | | |
 | :--- | :--- |
-| ![Research 1](assets/project-1-rusted.png) | **Classified: The Abstraction Leak**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** This exploit allows for unauthenticated remote code execution (RCE). No user interaction or local privileges are required to achieve a total breach of confidentiality and integrity. |
-| ![Research 2](assets/project-2-rusted.png) | **Classified: The Index Collapse**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** By manipulating the orchestration state, an attacker can force a full system compromise that escapes the application sandbox. The impact is "Critical" as it weaponizes the core retrieval mechanism against the host. |
-| ![Research 3](assets/project-3-rusted.png) | **Classified: The Broken Link**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** This "No-CVE Trap" exploits a design flaw in the trust model of the framework. It permits remote, unauthenticated actors to hijack the supply chain logic, leading to silent, persistent administrative takeover. |
-| ![Research 4](assets/project-4-rusted.png) | **Classified: The Ghost in the Machine**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** The terminal event. This vulnerability demonstrates full-spectrum host compromise. It requires no authentication and leaves zero forensic footprints, granting an external "Ghost" total control over the underlying cloud infrastructure. |
+| ![Research 1](assets/project-1-rusted.png) | **Case File 01: The Abstraction Leak**<br>Status: `[COORDINATED DISCLOSURE IN PROGRESS]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Target:** Microsoft Semantic Kernel. This exploit demonstrates unauthenticated RCE via a bypass of CVE-2026-25592. |
+| ![Research 2](assets/project-2-rusted.png) | **Case File 02: The Index Collapse**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** By manipulating orchestration state, an attacker can force a full system compromise. |
+| ![Research 3](assets/project-3-rusted.png) | **Case File 03: The Broken Link**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** Design flaw in the framework trust model permitting remote hijacking of supply chain logic. |
+| ![Research 4](assets/project-4-rusted.png) | **Case File 04: The Ghost in the Machine**<br>Status: `[AWAITING RESPONSIBLE DISCLOSURE]`<br>**CVSS:** `10.0 (CRITICAL)`<br>**Vector:** `AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`<br>**Justification:** Terminal event. Full-spectrum host compromise with zero forensic footprint. |
 
 ---
 
 ### 📅 April 2026 Disclosure Timeline
 Technical white papers currently held in **Secure Storage**. 
 
-* **April 23 2026:** Case File 01 - The Abstraction Leak `[CVSS 10.0]` `[LOCKED]`
-* **May 2026:** Case File 02 - The Index Collapse `[CVSS 10.0]` `[LOCKED]`
-* **May 2026:** Case File 03 - The Broken Link `[CVSS 10.0]` `[LOCKED]`
-* **May 2026:** Case File 04 - The Ghost in the Machine `[CVSS 10.0]` `[LOCKED]`
-* **May 2026 28:** **Industry Retrospective: The Fallout** `[Ecosystem Post-Mortem]`
+* **April 23, 2026:** [Case File 01: The Abstraction Leak (RCE Bypass)](posts/2026-07-14-initial-disclosure.md) `[ACTIVE]`
+* **May 2026:** Case File 02 - The Index Collapse `[LOCKED]`
+* **May 2026:** Case File 03 - The Broken Link `[LOCKED]`
+* **May 2026:** Case File 04 - The Ghost in the Machine `[LOCKED]`
+* **May 28, 2026:** **Industry Retrospective: The Fallout** `[Ecosystem Post-Mortem]`
 
-**Contact:** [Nuka.AI@proton.me](mailto:Nuka.AI@proton.me) | [JDP.Sec@proton.me](mailto:JDP.Sec@proton.me)
+---
+
+**Inquiries:** [JDP.sec@proton.me](mailto:JDP.sec@proton.me) | [Nuka.AI@proton.me](mailto:Nuka.AI@proton.me)
