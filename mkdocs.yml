@@ -21,22 +21,18 @@ theme:
 
 plugins:
   - search
-  - rss:
-      categories:
-        - Research
-        - Disclosure
-  - glightbox:
-      touchNavigation: true
-      loop: false
   - social:
       cards: true
       cards_directory: .cache/social
-      # Using stable community options to avoid build crashes
+      # This layout keeps the text on the left and moves the logo to the right
+      cards_layout: theme/nuka-ai 
       cards_layout_options:
         background_color: "#050505"
         color: "#ffffff"
         font_family: Roboto
-
+        # This will put your site name in a smaller font above the title
+        site_name_color: "#ff4444"
+        
 nav:
   - Home: index.md
   - Research Logs: 
