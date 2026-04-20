@@ -4,7 +4,6 @@ title: Initial Research Disclosure
 ---
 ---
 description: Technical advisory for a CVSS 10.0 RCE bypass in Microsoft Semantic Kernel.
-image: assets/project-1-rusted.png
 ---
 
 # Case File 01: The Abstraction Leak
