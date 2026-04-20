@@ -2,7 +2,6 @@ site_name: Nuka-AI Research Series
 site_url: https://nuka-ai.github.io
 site_description: Technical research and advisories focusing on RCE and architectural trust gaps in AI orchestration frameworks.
 site_author: Jeff Ponte (JDP Security)
-docs_dir: docs
 
 theme:
   name: material
@@ -17,22 +16,25 @@ theme:
     - navigation.sections
     - navigation.top
     - content.code.copy
-    - toc.follow
 
 plugins:
   - search
+  - rss:
+      categories:
+        - Research
+        - Disclosure
+  - glightbox:
+      touchNavigation: true
+      loop: false
   - social:
       cards: true
       cards_directory: .cache/social
-      # This layout keeps the text on the left and moves the logo to the right
-      cards_layout: theme/nuka-ai 
+      # Removing 'theme/nuka-ai' to fix the Exit Code 1
       cards_layout_options:
         background_color: "#050505"
         color: "#ffffff"
         font_family: Roboto
-        # This will put your site name in a smaller font above the title
-        site_name_color: "#ff4444"
-        
+
 nav:
   - Home: index.md
   - Research Logs: 
