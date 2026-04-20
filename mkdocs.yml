@@ -1,4 +1,3 @@
-
 site_name: Nuka AI Research Series
 site_url: https://nuka-ai.github.io
 docs_dir: docs
@@ -19,9 +18,7 @@ theme:
 
 plugins:
   - search
-  # This creates the nice preview cards for X/Twitter
-  - social:
-      cards_layout: theme/nuka-ai 
+  - social # Removed the custom cards_layout line that caused the crash
 
 nav:
   - Home: index.md
