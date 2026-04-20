@@ -25,6 +25,9 @@ plugins:
       categories:
         - Research
         - Disclosure
+  - glightbox:
+      touchNavigation: true
+      loop: false
   - social:
       cards: true
       cards_directory: .cache/social
