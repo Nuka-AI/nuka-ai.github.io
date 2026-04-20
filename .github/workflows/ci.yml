@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 5 * * *' # This runs the build automatically every day at 5:00 AM UTC
+    - cron: '0 5 * * *' 
 permissions:
   contents: write
 jobs:
@@ -12,9 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - run: pip install -r requirements.txt
-      - run: mkdocs gh-deploy --force
 
+      - name: Install System Graphics Libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+
+      - name: Install Dependencies
+        run: |
+          pip install mkdocs-material[imaging]
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
