@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 5 * * *' 
 permissions:
   contents: write
 jobs:
@@ -12,9 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.x
 
@@ -25,8 +21,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install mkdocs-material[imaging]
+          pip install mkdocs-material[imaging] mkdocs-glightbox mkdocs-minify-plugin mkdocs-rss-plugin
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         run: mkdocs gh-deploy --force
