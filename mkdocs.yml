@@ -1,6 +1,6 @@
 site_name: Nuka-AI Research Series
 site_url: https://nuka-ai.github.io
-site_description: Technical advisories and architectural research on AI orchestration vulnerabilities and RCE.
+site_description: Technical research and advisories focusing on RCE and architectural trust gaps in AI orchestration frameworks.
 site_author: Jeff Ponte (JDP Security)
 docs_dir: docs
 
@@ -28,10 +28,11 @@ plugins:
   - social:
       cards: true
       cards_directory: .cache/social
-      cards_layout: theme/constantine # Fixes the "generic" look
+      # Using stable community options to avoid build crashes
       cards_layout_options:
         background_color: "#050505"
         color: "#ffffff"
+        font_family: Roboto
 
 nav:
   - Home: index.md
