@@ -25,7 +25,7 @@ Welcome to the central research hub for the **Nuka-AI Research Series**. This in
 
 ---
 
-### 📅 April 2026 Disclosure Timeline
+### 📅 April/May 2026 Disclosure Timeline
 Technical white papers currently held in **Secure Storage**. 
 
 * **April 28, 2026:** [Case File 01: The Cracked Kernel The Abstraction Leak (RCE Bypass)](posts/2026-07-14-initial-disclosure.md) `[ACTIVE]`
