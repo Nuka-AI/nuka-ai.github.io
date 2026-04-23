@@ -28,12 +28,12 @@ Welcome to the central research hub for the **Nuka-AI Research Series**. This in
 ### 📅 April/May 2026 Disclosure Timeline
 Technical white papers currently held in **Secure Storage**. 
 
-* **April 28, 2026:** [Case File 01: The Cracked Kernel The Abstraction Leak (RCE Bypass)](posts/2026-07-14-initial-disclosure.md) `[ACTIVE]`
-* **May 5, 2026:** Case File 02 - Agent Down The Containment Breach `[LOCKED]`
-* **May 12, 2026:** Case File 03 - The Index Collapse `[LOCKED]`
-* **May 19, 2026:** Case File 04 - The Broken Link `[LOCKED]`
-* **May 26, 2026:** Case File 05 - The Ghost in the Haystack `[LOCKED]`
-* **June 5, 2026:** **Industry Retrospective: The Fallout** `[Ecosystem Post-Mortem]`
+* **April 28, 2026:** [Case File 01: The Cracked Kernel The Abstraction Leak (RCE Bypass)](posts/2026-07-14-initial-disclosure.md) `[ACTIVE]` **CVSS:** `10.0 (CRITICAL)`
+* **May 5, 2026:** Case File 02 - Agent Down The Containment Breach `[LOCKED]` **CVSS:** `10.0 (CRITICAL)`
+* **May 12, 2026:** Case File 03 - The Index Collapse `[LOCKED]` **CVSS:** `10.0 (CRITICAL)`
+* **May 19, 2026:** Case File 04 - The Broken Link `[LOCKED]` **CVSS:** `10.0 (CRITICAL)`
+* **May 26, 2026:** Case File 05 - The Ghost in the Haystack `[LOCKED]` **CVSS:** `10.0 (CRITICAL)`
+* **June 5, 2026:** **Industry Retrospective: The Fallout `[Ecosystem Post-Mortem]`
 
 ---
 
