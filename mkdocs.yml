@@ -28,7 +28,7 @@ plugins:
       loop: false
   - social:
       cards: true
-      cards_directory: .cache/social
+      # 'cards_directory' is now handled automatically; removing it fixes the warning
       cards_layout_options:
         background_color: "#050505"
         color: "#ffffff"
@@ -48,8 +48,3 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
-  atproto: .well-known/atproto-did
-
-# This is the secret sauce that stops MkDocs from ignoring the dot-folder
-watch:
-  - .well-known
