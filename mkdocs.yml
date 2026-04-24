@@ -49,3 +49,7 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
+      # Add this to your existing mkdocs.yml
+      # This tells MkDocs to copy this file exactly as-is to the final site
+    - .well-known/atproto-did
+
