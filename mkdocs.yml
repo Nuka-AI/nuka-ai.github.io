@@ -1,4 +1,4 @@
-site_name: Nuka-AI Research Series
+isite_name: Nuka-AI Research Series
 site_url: https://nuka-ai.github.io
 site_description: Technical research and advisories focusing on RCE and architectural trust gaps in AI orchestration frameworks.
 site_author: Jeff Ponte (JDP Security)
@@ -42,6 +42,7 @@ nav:
     - April 23 Disclosure: posts/2026-07-14-initial-disclosure.md
 
 extra:
+- .well-known/atproto-did
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
@@ -49,7 +50,5 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
-      # Add this to your existing mkdocs.yml
-      # This tells MkDocs to copy this file exactly as-is to the final site
-    - .well-known/atproto-did
+    
 
