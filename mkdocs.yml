@@ -1,4 +1,4 @@
-8isite_name: Nuka-AI Research Series
+site_name: Nuka-AI Research Series
 site_url: https://nuka-ai.github.io
 site_description: Technical research and advisories focusing on RCE and architectural trust gaps in AI orchestration frameworks.
 site_author: Jeff Ponte (JDP Security)
@@ -49,7 +49,9 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
-- .well-known/atproto-did
-  
+  - .well-known/atproto-did
+
+include_paths:
+  - .well-known
 
 
