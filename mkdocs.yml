@@ -29,7 +29,6 @@ plugins:
   - social:
       cards: true
       cards_directory: .cache/social
-      # Removing 'theme/nuka-ai' to fix the Exit Code 1
       cards_layout_options:
         background_color: "#050505"
         color: "#ffffff"
@@ -49,8 +48,3 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
-
-include_paths:
-  - .well-known
-
-
