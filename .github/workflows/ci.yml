@@ -19,12 +19,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
 
-      - name: Install Dependencies
+      - name: Install All Plugins
         run: |
-          pip install mkdocs-material[imaging]
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install mkdocs-material[imaging] mkdocs-glightbox mkdocs-minify-plugin mkdocs-rss-plugin
 
-      - name: Deploy
+      - name: Build and Inject BlueSky Verification
         run: |
-          # The -b flag forces mkdocs to include hidden (dot) files
-          mkdocs gh-deploy --force --ignore-version
+          # 1. Build the site normally
+          mkdocs build
+          
+          # 2. Manually inject the BlueSky file into the output folder
+          # This bypasses MkDocs' tendency to hide dot-folders
+          mkdir -p site/.well-known
+          cp docs/.well-known/atproto-did site/.well-known/atproto-did
+          
+          # 3. Deploy the pre-built 'site' folder to GitHub Pages
+          # Using a specialized action for the manual injection step
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
