@@ -1,4 +1,4 @@
-name: ci 
+name: ci
 on:
   push:
     branches:
@@ -21,8 +21,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install mkdocs-material[imaging] mkdocs-glightbox mkdocs-minify-plugin mkdocs-rss-plugin
+          pip install mkdocs-material[imaging]
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Deploy
-        run: mkdocs gh-deploy --force
+        run: |
+          # The -b flag forces mkdocs to include hidden (dot) files
+          mkdocs gh-deploy --force --ignore-version
