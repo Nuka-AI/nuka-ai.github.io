@@ -49,7 +49,6 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
-  - .well-known/atproto-did
 
 include_paths:
   - .well-known
