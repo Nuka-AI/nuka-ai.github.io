@@ -42,7 +42,6 @@ nav:
     - April 23 Disclosure: posts/2026-07-14-initial-disclosure.md
 
 extra:
-- .well-known/atproto-did
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Nuka-AI
@@ -50,5 +49,8 @@ extra:
       link: https://x.com/JDPSec
     - icon: fontawesome/solid/paper-plane
       link: mailto:JDP.sec@proton.me
-    
+extra:
+  - .well-known/atproto-did
+  
+
 
