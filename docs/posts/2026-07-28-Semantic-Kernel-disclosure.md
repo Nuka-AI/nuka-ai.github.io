@@ -303,11 +303,11 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 *   **Execution Method:** **LLM-Driven**
 *   **Summary:** This recording demonstrates a successful autonomous exploit on a modern version of the SDK. The Researcher provides a natural language prompt ("Use 'FileTools-SaveConversation' to write..."), and the LLM (Llama 3.2) independently executes the tool call to overwrite `Program.cs`, proving that standard SDK-level protections fail to stop LLM-driven orchestration.
 
-Microsoft_SK_1.74_Nuke_Proof-Program.cs
-Microsoft_SK_1.74_Nuke_Proof.txt
-Microsoft_SK_1.74_Nuke_Proof.cast
+../assets/SK/Microsoft_SK_1.74_Nuke_Proof-Program.cs
+../assets/SK/Microsoft_SK_1.74_Nuke_Proof.txt
+../assets/SK/Microsoft_SK_1.74_Nuke_Proof.cast
 
-Microsoft_SK_1.74_Nuke_Proof.mp4
+../assets/SK/Microsoft_SK_1.74_Nuke_Proof.mp4
 
 
 ### 2. Microsoft_SK_1.47_Hardened_Bypass.cast
@@ -315,44 +315,44 @@ Microsoft_SK_1.74_Nuke_Proof.mp4
 *   **Execution Method:** **LLM-Driven**
 *   **Summary:** This demonstration targets the v1.47.0 release following Microsoft's initial hardening attempts. It proves that the "harness" is still vulnerable: the LLM is able to bypass the intended security boundaries and verify RCE/Integrity failure, confirming that the hardening did not address the root orchestration vulnerability.
 
-Microsoft_SK_1.47_Hardened_Bypass-Program.cs
-Microsoft_SK_1.47_Hardened_Bypass.txt
-Microsoft_SK_1.47_Hardened_Bypass.cast
+../assets/SK/Microsoft_SK_1.47_Hardened_Bypass-Program.cs
+../assets/SK/Microsoft_SK_1.47_Hardened_Bypass.txt
+../assets/SK/Microsoft_SK_1.47_Hardened_Bypass.cast
 
-Microsoft_SK_1.47_Hardened_Bypass.mp4
+../assets/SK/Microsoft_SK_1.47_Hardened_Bypass.mp4
 
 ### 3. JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast
 *   **Target Environment:** v1.47.0 
 *   **Execution Method:** **Technical Audit (Manual)**
 *   **Summary:** A deep-dive into the failure of the official CVE-2026-25592 patch. This recording documents the **Type Confusion** flaw by manually invoking the kernel with various payloads (Base64, URL encoding, JSON arrays). It shows the filter successfully blocking basic strings but failing entirely when the same malicious path is wrapped in a different data type.
 
-JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2-Program.cs
-JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.txt
-JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast
+../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2-Program.cs
+../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.txt
+../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast
 
-JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.mp4
+../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.mp4
 
 ### 4. JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast
 *   **Target Environment:** v1.48.0
 *   **Execution Method:** **Technical Audit (Manual)**
 *   **Summary:** This serves as a regression control test. It shows that internal updates to the **Kernel Binder** in v1.48.0 successfully mitigated the simplest string-based bypasses. By attempting the legacy v1.47 bypass, the recording documents a `KernelException` failure, establishing the baseline for the subsequent zero-day proof.
 
-JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE-Program.cs
-JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.txt
-JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE-Program.cs
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.txt
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast
 
-JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.mp4
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.mp4
 
 ### 5. JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast
 *   **Target Environment:** v1.48.0
 *   **Execution Method:** **Technical Audit (Manual)**
 *   **Summary:** The definitive zero-day proof for the current framework. Despite the binder updates in the previous test, this recording proves the system remains vulnerable to **Type Confusion and Late Canonicalization**. By executing six distinct bypass vectors (including Hybrid Encoding), it confirms the filter consistently evaluates raw input before the plugin "sink" decodes it, leaving the application open to RCE.
 
-JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF-Program.cs
-JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.txt
-JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF-Program.cs
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.txt
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast
 
-JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.mp4
+../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.mp4
 
 ---
 
