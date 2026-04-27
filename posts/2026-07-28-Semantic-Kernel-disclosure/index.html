@@ -1495,8 +1495,7 @@ public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, .
 <p>Architecture is greater than implementation. Flaws in architecture cannot be simply patched with regex; they must be redesigned from the ground up. Until orchestration frameworks embrace Zero-Trust principles, the "Agentic AI" revolution remains a critical liability for the enterprise.</p>
 <h3 id="about-project-nuka-ai">About Project Nuka-AI</h3>
 <p>Project Nuka-AI is an independent research initiative focused on identifying systemic architectural risks in AI orchestration frameworks. Led by <strong>Jeff Ponte (CISSP, CCSP, CEH)</strong>, the project combines over a decade of enterprise software development and cloud security operations experience to ensure the AI revolution is built on secure foundations. </p>
-<p><strong>Contact:</strong> research@jdp-security.com<br>
-<strong>Full Disclosure &amp; PoC:</strong> <a href="https://jdp-security.com/nuka-ai-001">https://jdp-security.com/nuka-ai-001</a></p>
+<p>**Contact: Nuka.AI@proton.me</p>
 <hr>
 <h2 id="appendix-1-developer-remediation-manual-path-anchoring">Appendix 1: Developer Remediation (Manual Path Anchoring)</h2>
 <p>If you are unable to upgrade to a fundamentally secured version of Semantic Kernel, you must implement a manual <code>IFunctionInvocationFilter</code> to prevent CWE-1039 exploitation. This logic intercepts the LLM's tool call <em>before</em> it hits the file system, deeply inspects complex types, and ensures the path is restricted to a specific "Safe Root."</p>
