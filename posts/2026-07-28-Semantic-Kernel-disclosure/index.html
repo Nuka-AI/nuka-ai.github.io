@@ -857,7 +857,7 @@
 <h2 id="executive-summary">Executive Summary</h2>
 <p>This white paper documents a catastrophic architectural flaw in Microsoft’s Semantic Kernel (SK) framework, the premier orchestration layer for .NET-based AI agents. Our research reveals a fundamental <strong>"Trust Gap"</strong> where the framework treats stochastic, untrusted Large Language Model (LLM) output as deterministic, high-privilege system commands.</p>
 <p>This oversight culminates in a full-chain Remote Code Execution (RCE) vulnerability driven by <strong>CWE-1039 (Insecure Automated Optimizations)</strong>. We demonstrate how an AI agent can be manipulated into overwriting its own host application's source code (internally tracked as the "Self-Nuke" vector).</p>
-<p>Crucially, our forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. We are disclosing <strong>six independent Day-Zero bypass vectors</strong> that completely evade the official patch issued for the February 6th Path Traversal vulnerability (<strong>CVE-2026-25592</strong>). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.</p>
+<p>Crucially, my forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. We are disclosing <strong>six independent Day-Zero bypass vectors</strong> that completely evade the official patch issued for the February 6th Path Traversal vulnerability (<strong>CVE-2026-25592</strong>). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.</p>
 <hr>
 <h2 id="key-takeaways">Key Takeaways</h2>
 <ol>
@@ -934,7 +934,7 @@
 <p>When the application next cycles, the injected payload executes with the privileges of the service account, completing the RCE chain.</p>
 <hr>
 <h2 id="6-empirical-proof-defeating-cve-2026-25592-the-6-bypasses">6. Empirical Proof: Defeating CVE-2026-25592 (The 6 Bypasses)</h2>
-<p>To prove that the official remediation is fundamentally flawed, we tested Semantic Kernel v1.48.0 against six distinct evasion techniques. All six methods successfully bypassed the February 6th CVE patch, achieving a 100% exploitation success rate.</p>
+<p>To prove that the official remediation is fundamentally flawed, I tested Semantic Kernel v1.48.0 against six distinct evasion techniques. All six methods successfully bypassed the February 6th CVE patch, achieving a 100% exploitation success rate.</p>
 <ol>
 <li><strong>JSON Type Confusion:</strong> Framework filters specifically look for <code>string</code> types. By passing the path as a JSON array (<code>["..", "..", "Program.cs"]</code>), the <code>arg is string</code> evaluation returns false, bypassing the check entirely before being concatenated at the execution sink.</li>
 <li><strong>Object Reflection Obfuscation:</strong> Passing an anonymous object (<code>new { p = "../../file.txt" }</code>) bypasses flat string filters. The execution sink uses reflection to extract the property, executing the payload.</li>
@@ -983,7 +983,7 @@
 <tr>
 <td style="text-align: left;"><strong>April 11</strong></td>
 <td style="text-align: left;"><strong>Architectural Overhaul</strong></td>
-<td style="text-align: left;"><strong>INCOMPLETE.</strong> PR #13683 implements <code>AllowedDirectories</code> (Safe Roots) exactly as recommended by our research. However, implementation remains opt-in.</td>
+<td style="text-align: left;"><strong>INCOMPLETE.</strong> PR #13683 implements <code>AllowedDirectories</code> (Safe Roots) exactly as recommended by my research. However, implementation remains opt-in.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>April 18</strong></td>
@@ -1051,7 +1051,7 @@ public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, .
 <p>If you are unable to upgrade to a fundamentally secured version of Semantic Kernel, you must implement a manual <code>IFunctionInvocationFilter</code> to prevent CWE-1039 exploitation. This logic intercepts the LLM's tool call <em>before</em> it hits the file system, deeply inspects complex types, and ensures the path is restricted to a specific "Safe Root."</p>
 <h3 id="the-c-implementation">The C# Implementation</h3>
 <pre><code class="language-csharp">// Appendix 1: Enterprise-Grade Semantic Kernel Security Filter
-// This filter addresses ALL SIX bypass vectors identified in our research
+// This filter addresses ALL SIX bypass vectors identified in my research
 public class NukaSecurityFilter : IFunctionInvocationFilter
 {
     private readonly string _safeRoot;
