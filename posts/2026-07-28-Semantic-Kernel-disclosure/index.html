@@ -12,6 +12,8 @@
         <link rel="canonical" href="https://nuka-ai.github.io/posts/2026-07-28-Semantic-Kernel-disclosure/">
       
       
+        <link rel="prev" href="../init/">
+      
       
       
         
@@ -234,10 +236,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../init/" class="md-tabs__link">
           
   
@@ -313,26 +317,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked="">
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -350,7 +359,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -393,10 +402,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../2026-07-14-initial-disclosure/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    April 23 Disclosure
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -412,6 +448,409 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#the-orchestration-trust-gap-day-zero-bypasses-in-microsoft-semantic-kernel-and-agent-framework-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Orchestration Trust Gap: Day-Zero Bypasses in Microsoft Semantic Kernel and Agent Framework 1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-business-impact-the-silent-enterprise-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Business Impact: The "Silent" Enterprise Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Business Impact: The &quot;Silent&quot; Enterprise Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#industries-at-immediate-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Industries at Immediate Risk:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-mechanics-of-orchestration-understanding-semantic-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Mechanics of Orchestration: Understanding Semantic Kernel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Mechanics of Orchestration: Understanding Semantic Kernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-execution-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Execution Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-dual-vulnerability-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Dual-Vulnerability Landscape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-three-doors-of-vulnerability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Three Doors of Vulnerability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. The Three Doors of Vulnerability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-the-front-door-prompt-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 The Front Door (Prompt Filtering)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-the-kitchen-door-llm-translation-toctou-and-type-confusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 The Kitchen Door (LLM Translation, TOCTOU, and Type Confusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-the-garage-door-the-cwe-1039-auto-invocation-architectural-flaw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 The Garage Door: The CWE-1039 Auto-Invocation Architectural Flaw
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-cwe-1039-rce-chain-a-golden-chain-of-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The CWE-1039 RCE Chain: A Golden Chain of Failure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-empirical-proof-defeating-cve-2026-25592-the-6-bypasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Empirical Proof: Defeating CVE-2026-25592 (The 6 Bypasses)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-the-shadow-patch-war-full-forensic-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. The Shadow Patch War: Full Forensic Timeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-technical-analysis-the-ifunctioninvocationfilter-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Technical Analysis: The IFunctionInvocationFilter Failure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-remediation-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Remediation &amp; Recommendations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Remediation &amp; Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-immediate-mitigations-developer-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Immediate Mitigations (Developer Level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-architectural-requirements-microsoft-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Architectural Requirements (Microsoft Level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-conclusion-a-call-for-architectural-accountability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Conclusion: A Call for Architectural Accountability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Conclusion: A Call for Architectural Accountability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#about-project-nuka-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        About Project Nuka-AI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-1-developer-remediation-manual-path-anchoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix 1: Developer Remediation (Manual Path Anchoring)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix 1: Developer Remediation (Manual Path Anchoring)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-c-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The C# Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-2-cast-recording-demonstration-breakdown-chronological" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix 2: .cast Recording Demonstration Breakdown (Chronological)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix 2: .cast Recording Demonstration Breakdown (Chronological)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-microsoft_sk_174_nuke_proofcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Microsoft_SK_1.74_Nuke_Proof.cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-microsoft_sk_147_hardened_bypasscast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Microsoft_SK_1.47_Hardened_Bypass.cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-jdp_security_series_nukaai_v147-cve-2026-25592-bypass-2cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-jdp_security_series_nukaai_v148-breaking_changecast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-jdp_security_series_nukaai_v148-zero_day_proofcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-3-self-nuke-screen-shots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix 3: Self-Nuke Screen Shots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-4-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix 4: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
