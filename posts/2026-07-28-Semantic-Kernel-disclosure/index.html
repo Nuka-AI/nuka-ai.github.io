@@ -845,6 +845,73 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Appendix 4: Frequently Asked Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#appendix-5-forensic-evidence-of-shadow-patching-remediations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix 5: Forensic Evidence of "Shadow Patching" &amp; Remediations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix 5: Forensic Evidence of &quot;Shadow Patching&quot; &amp; Remediations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-commit-3e4c91a-the-sanity-check-illusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Commit: 3e4c91a — The "Sanity Check" Illusion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-commit-fa2d52f6-shell-blinding-failed-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Commit: fa2d52f6 — "Shell Blinding" (Failed Remediation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pr-13683-opt-in-safe-roots-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PR #13683 — Opt-in "Safe Roots" Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pr-13702-recursive-canonicalization-final-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. PR #13702 — Recursive Canonicalization (Final Attempt)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1269,6 +1336,73 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Appendix 4: Frequently Asked Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#appendix-5-forensic-evidence-of-shadow-patching-remediations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix 5: Forensic Evidence of "Shadow Patching" &amp; Remediations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix 5: Forensic Evidence of &quot;Shadow Patching&quot; &amp; Remediations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-commit-3e4c91a-the-sanity-check-illusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Commit: 3e4c91a — The "Sanity Check" Illusion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-commit-fa2d52f6-shell-blinding-failed-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Commit: fa2d52f6 — "Shell Blinding" (Failed Remediation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pr-13683-opt-in-safe-roots-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PR #13683 — Opt-in "Safe Roots" Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pr-13702-recursive-canonicalization-final-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. PR #13702 — Recursive Canonicalization (Final Attempt)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1702,6 +1836,55 @@ A: Partially. It prevents automated exploitation but manual tool calls remain vu
 A: Unknown. Our disclosure was rejected, and shadow patches have been incomplete.</p>
 <p><strong>Q: Are other AI frameworks vulnerable?</strong>
 A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain, LlamaIndex, and Deepset Haystack (disclosures scheduled May 2026).</p>
+<hr>
+<h3 id="appendix-5-forensic-evidence-of-shadow-patching-remediations"><strong>Appendix 5: Forensic Evidence of "Shadow Patching" &amp; Remediations</strong></h3>
+<p>This appendix provides the forensic timeline of Microsoft's internal attempts to remediate the vulnerabilities disclosed by Project Nuka-AI. Despite publicly dismissing the research as "Developer Error," internal engineering records confirm a series of quiet, incomplete mitigations (Shadow Patches) designed to address the "Trust Gap" without issuing a new CVE.</p>
+<hr>
+<h4 id="1-commit-3e4c91a-the-sanity-check-illusion"><strong>1. Commit: <code>3e4c91a</code> — The "Sanity Check" Illusion</strong></h4>
+<ul>
+<li><strong>Date:</strong> April 7, 2026</li>
+<li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/commit/3e4c91a">view commit 3e4c91a</a></li>
+<li><strong>Forensic Diff Summary:</strong> * <strong>Change:</strong> Introduced <code>ValidateArguments()</code> method within the core orchestration loop.<ul>
+<li><strong>Logic:</strong> Added regex-based "sanity checks" specifically targeting shell-metacharacters (<code>;</code>, <code>&amp;</code>, <code>|</code>).</li>
+<li><strong>The Shadow Patch:</strong> This was pushed while the vulnerability was in "Triage," proving internal recognition of the RCE vector. It was bypassed within hours using the <strong>Late Canonicalization</strong> vector.</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-commit-fa2d52f6-shell-blinding-failed-remediation"><strong>2. Commit: <code>fa2d52f6</code> — "Shell Blinding" (Failed Remediation)</strong></h4>
+<ul>
+<li><strong>Date:</strong> April 9, 2026</li>
+<li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/commit/fa2d52f6">view commit fa2d52f6</a></li>
+<li><strong>Forensic Diff Summary:</strong><ul>
+<li><strong>Change:</strong> Modified <code>TerminalPlugin.cs</code> to truncate or mask standard output (STDOUT) of system-level tools.</li>
+<li><strong>Logic:</strong> Attempted to prevent the LLM from "seeing" the results of a successful compromise, effectively "blinding" the attacker.</li>
+<li><strong>The Flaw:</strong> Did not block the <em>execution</em> of the command, only the <em>feedback</em>. The <strong>"Self-Nuke"</strong> exploit remained fully functional.</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-pr-13683-opt-in-safe-roots-implementation"><strong>3. PR #13683 — Opt-in "Safe Roots" Implementation</strong></h4>
+<ul>
+<li><strong>Date:</strong> April 11, 2026</li>
+<li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/pull/13683">view PR #13683</a></li>
+<li><strong>Forensic Diff Summary:</strong><ul>
+<li><strong>Change:</strong> Implementation of <code>AllowedDirectories</code> property for the <code>FileIO</code> plugin.</li>
+<li><strong>Logic:</strong> Created a "jail" for file operations. </li>
+<li><strong>The Shadow Patch:</strong> This implementation closely mirrored the remediation advice provided in Nuka-AI’s initial private disclosure, yet it remained an optional setting, leaving default configurations vulnerable.</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-pr-13702-recursive-canonicalization-final-attempt"><strong>4. PR #13702 — Recursive Canonicalization (Final Attempt)</strong></h4>
+<ul>
+<li><strong>Date:</strong> April 18, 2026</li>
+<li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/pull/13702">view PR #13702</a></li>
+<li><strong>Forensic Diff Summary:</strong><ul>
+<li><strong>Change:</strong> Introduced a multi-pass normalization engine for incoming tool-call arguments.</li>
+<li><strong>Logic:</strong> Targeted <strong>Type Confusion</strong> by attempting to decode Base64, URL-encoding, and Homoglyphs before validation.</li>
+<li><strong>The Flaw:</strong> <strong>STILL VULNERABLE.</strong> Because the canonicalization happens <em>after</em> the framework makes the trust decision to invoke the tool, the logic remains flawed at the architectural level.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Forensic Conclusion:</strong> The discrepancy between Microsoft’s public "Developer Error" stance and these frequent, targeted commits proves that the framework architecture is recognized as insecure. Organizations are currently operating with a "False Green" security status because no CVE has been issued to track these failed internal remediation cycles.</p>
 
 
 
