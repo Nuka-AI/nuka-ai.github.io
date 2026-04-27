@@ -25,9 +25,9 @@ title:  Microsoft's Semantic Kernel - The Cracked Kernel
 ## Executive Summary
 This white paper documents a catastrophic architectural flaw in Microsoft’s Semantic Kernel (SK) framework, the premier orchestration layer for .NET-based AI agents. Our research reveals a fundamental **"Trust Gap"** where the framework treats stochastic, untrusted Large Language Model (LLM) output as deterministic, high-privilege system commands.
 
-This oversight culminates in a full-chain Remote Code Execution (RCE) vulnerability driven by **CWE-1039 (Insecure Automated Optimizations)**. We demonstrate how an AI agent can be manipulated into overwriting its own host application's source code (internally tracked as the "Self-Nuke" vector).
+This oversight culminates in a full-chain Remote Code Execution (RCE) vulnerability driven by **CWE-1039 (Insecure Automated Optimizations)**. I demonstrate how an AI agent can be manipulated into overwriting its own host application's source code (internally tracked as the "Self-Nuke" vector).
 
-Crucially, my forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. We are disclosing **six independent Day-Zero bypass vectors** that completely evade the official patch issued for the February 6th Path Traversal vulnerability (**CVE-2026-25592**). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.
+Crucially, my forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. I am disclosing **six independent Day-Zero bypass vectors** that completely evade the official patch issued for the February 6th Path Traversal vulnerability (**CVE-2026-25592**). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.
 
 ---
 
