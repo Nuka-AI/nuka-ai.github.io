@@ -385,7 +385,24 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 
 ---
 
-## Appendix 3: Frequently Asked Questions
+## Appendix 3: Self-Nuke Screen Shots
+
+Semantic Kernel Version 1.74.0
+![Alt](/assets/SK/1-74-1.png)
+
+The Program.cs nuke command provided by LLM Prompt:
+![Alt](/assets/SK/1-74-2.png)
+
+Semantic Kernel Version 1.47.0 
+***The hardened shadow patched version Commit fa2d52f6 (Shell blinding). Which is still vulnerable as can be seen here:
+![Alt](/assets/SK/1-47-1.png)
+
+The Program.cs nuke command provided by LLM Prompt:
+![Alt](/assets/SK/1-47-2.png)
+
+---
+
+## Appendix 4: Frequently Asked Questions
 
 **Q: Is Agent Framework 1.0 affected?**
 A: Yes. Agent Framework 1.0 inherits Semantic Kernel's orchestration layer and is vulnerable.
