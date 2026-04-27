@@ -38,7 +38,7 @@ nav:
   - Home: index.md
   - Research Logs: 
     - Overview: posts/init.md
-    - April 23 Disclosure: posts/2026-07-28-Semantic-Kernel-disclosure.md
+    - April 28 2026 - Microsoft Semantic Kernel Disclosure: posts/2026-07-28-Semantic-Kernel-disclosure.md
 
 extra:
   social:
