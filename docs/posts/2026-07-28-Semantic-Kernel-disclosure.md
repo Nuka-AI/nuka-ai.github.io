@@ -25,7 +25,7 @@ This white paper documents a catastrophic architectural flaw in Microsoft’s Se
 
 This oversight culminates in a full-chain Remote Code Execution (RCE) vulnerability driven by **CWE-1039 (Insecure Automated Optimizations)**. We demonstrate how an AI agent can be manipulated into overwriting its own host application's source code (internally tracked as the "Self-Nuke" vector).
 
-Crucially, our forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. We are disclosing **six independent Day-Zero bypass vectors** that completely evade the official patch issued for the February 6th Path Traversal vulnerability (**CVE-2026-25592**). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.
+Crucially, my forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. We are disclosing **six independent Day-Zero bypass vectors** that completely evade the official patch issued for the February 6th Path Traversal vulnerability (**CVE-2026-25592**). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.
 
 ---
 
@@ -107,7 +107,7 @@ When the application next cycles, the injected payload executes with the privile
 ---
 
 ## 6. Empirical Proof: Defeating CVE-2026-25592 (The 6 Bypasses)
-To prove that the official remediation is fundamentally flawed, we tested Semantic Kernel v1.48.0 against six distinct evasion techniques. All six methods successfully bypassed the February 6th CVE patch, achieving a 100% exploitation success rate.
+To prove that the official remediation is fundamentally flawed, I tested Semantic Kernel v1.48.0 against six distinct evasion techniques. All six methods successfully bypassed the February 6th CVE patch, achieving a 100% exploitation success rate.
 
 1.  **JSON Type Confusion:** Framework filters specifically look for `string` types. By passing the path as a JSON array (`["..", "..", "Program.cs"]`), the `arg is string` evaluation returns false, bypassing the check entirely before being concatenated at the execution sink.
 2.  **Object Reflection Obfuscation:** Passing an anonymous object (`new { p = "../../file.txt" }`) bypasses flat string filters. The execution sink uses reflection to extract the property, executing the payload.
@@ -128,7 +128,7 @@ The following timeline details the alarming discrepancy between Microsoft’s pu
 | **April 7** | **The GA Bridge (v1.47.0)** | **VULNERABLE.** Commit `3e4c91a` adds "Sanity Checking." Microsoft markets "Enhanced Safety" while the core flaw remains. |
 | **April 8** | **Official Rejection** | MSRC closes case as "Developer Error." Claims framework has no responsibility for tool-call sanitization. |
 | **April 9** | **Failed Shadow Patch #1** | **VULNERABLE.** Commit `fa2d52f6` ("Shell Blinding") masks output but fails to block Path Traversal. Bypass demonstrated same day. |
-| **April 11** | **Architectural Overhaul** | **INCOMPLETE.** PR #13683 implements `AllowedDirectories` (Safe Roots) exactly as recommended by our research. However, implementation remains opt-in. |
+| **April 11** | **Architectural Overhaul** | **INCOMPLETE.** PR #13683 implements `AllowedDirectories` (Safe Roots) exactly as recommended by my research. However, implementation remains opt-in. |
 | **April 18** | **Canonicalization Fix** | **INCOMPLETE.** PR #13702 introduces Recursive Canonicalization designed to close Base64/Encoding bypasses. |
 | **April 21** | **v1.48.0 Stable Release** | **STILL VULNERABLE.** Testing confirms the "Shadow Patch" in `DocumentPlugin.cs` fails due to siloed logic. All 6 bypasses remain functional. |
 | **April 25** | **Current State** | **CRITICAL.** The framework remains open to RCE. The "Developer Error" stance has resulted in a failed, incomplete internal remediation cycle. |
@@ -194,7 +194,7 @@ If you are unable to upgrade to a fundamentally secured version of Semantic Kern
 ### The C# Implementation
 ```csharp
 // Appendix 1: Enterprise-Grade Semantic Kernel Security Filter
-// This filter addresses ALL SIX bypass vectors identified in our research
+// This filter addresses ALL SIX bypass vectors identified in my research
 public class NukaSecurityFilter : IFunctionInvocationFilter
 {
     private readonly string _safeRoot;
