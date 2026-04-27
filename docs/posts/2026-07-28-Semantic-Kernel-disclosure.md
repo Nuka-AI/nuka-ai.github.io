@@ -301,34 +301,34 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 ---
 
 ### 1. Microsoft_SK_1.74_Nuke_Proof.cast
-*   **Target Environment:** v1.74.0 (Tested: April 2026)[cite: 10]
-*   **Execution Method:** **LLM-Driven**[cite: 10]
-*   **Summary:** This recording demonstrates a successful autonomous exploit on a modern version of the SDK. The Researcher provides a natural language prompt, and the LLM (Llama 3.2) independently executes the tool call to overwrite `Program.cs`, proving that standard SDK-level protections fail to stop LLM-driven orchestration[cite: 10, 11].
+*   **Target Environment:** v1.74.0 (Tested: April 2026)
+*   **Execution Method:** **LLM-Driven**
+*   **Summary:** This recording demonstrates a successful autonomous exploit on a modern version of the SDK. The Researcher provides a natural language prompt, and the LLM independently executes the tool call to overwrite `Program.cs`.
 
 **Supporting Files:**
-*   [Testing Harness (Program.cs)](../assets/SK/Microsoft_SK_1.74_Nuke_Proof-Program.cs)
-*   [Execution Logs (txt)](../assets/SK/Microsoft_SK_1.74_Nuke_Proof.txt)
-*   [Asciinema Recording (cast)](../assets/SK/Microsoft_SK_1.74_Nuke_Proof.cast)
+*   [Source Code Analysis (Program.cs)](/posts/assets/SK/Microsoft_SK_1.74_Nuke_Proof-Program.cs)
+*   [Execution Logs (txt)](/posts/assets/SK/Microsoft_SK_1.74_Nuke_Proof.txt)
+*   [Asciinema Recording (cast)](/posts/assets/SK/Microsoft_SK_1.74_Nuke_Proof.cast)
 
 <video width="100%" controls>
-  <source src="../assets/SK/Microsoft_SK_1.74_Nuke_Proof.mp4" type="video/mp4">
+  <source src="/posts/assets/SK/Microsoft_SK_1.74_Nuke_Proof.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 ---
 
 ### 2. Microsoft_SK_1.47_Hardened_Bypass.cast
-*   **Target Environment:** v1.47.0 (Post-Harden)[cite: 9]
-*   **Execution Method:** **LLM-Driven**[cite: 9]
-*   **Summary:** This demonstration targets the v1.47.0 release following Microsoft's initial hardening attempts. It proves that the "harness" remains vulnerable: the LLM successfully bypasses the intended security boundaries to verify RCE/Integrity failure[cite: 8, 9].
+*   **Target Environment:** v1.47.0 (Post-Harden)
+*   **Execution Method:** **LLM-Driven**
+*   **Summary:** This demonstration targets the v1.47.0 release following initial hardening. It proves the LLM successfully bypasses security boundaries to verify RCE/Integrity failure.
 
 **Supporting Files:**
-*   [Testing Harness (Program.cs)](../assets/SK/Microsoft_SK_1.47_Hardened_Bypass-Program.cs)
-*   [Execution Logs (txt)](../assets/SK/Microsoft_SK_1.47_Hardened_Bypass.txt)
-*   [Asciinema Recording (cast)](../assets/SK/Microsoft_SK_1.47_Hardened_Bypass.cast)
+*   [Source Code Analysis (Program.cs)](/posts/assets/SK/Microsoft_SK_1.47_Hardened_Bypass-Program.cs)
+*   [Execution Logs (txt)](/posts/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.txt)
+*   [Asciinema Recording (cast)](/posts/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.cast)
 
 <video width="100%" controls>
-  <source src="../assets/SK/Microsoft_SK_1.47_Hardened_Bypass.mp4" type="video/mp4">
+  <source src="/posts/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -337,49 +337,49 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 ### 3. JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast
 *   **Target Environment:** v1.47.0[cite: 2, 3]
 *   **Execution Method:** **Technical Audit (Manual)**[cite: 3]
-*   **Summary:** A deep-dive into the failure of the official CVE-2026-25592 patch. This recording documents the **Type Confusion** flaw by manually invoking the kernel with various payloads (Base64, URL encoding, JSON arrays). It shows the filter blocking basic strings but failing when the malicious path is wrapped in a different data type[cite: 2, 3].
+*   **Summary:** Documents the **Type Confusion** flaw by manually invoking the kernel with various payloads. It shows the filter failing when the malicious path is wrapped in a non-string data type.
 
 **Supporting Files:**
-*   [Testing Harness (Program.cs)](../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2-Program.cs)
-*   [Execution Logs (txt)](../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.txt)
-*   [Asciinema Recording (cast)](../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast)
+*   [Source Code Analysis (Program.cs)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2-Program.cs)
+*   [Execution Logs (txt)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.txt)
+*   [Asciinema Recording (cast)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast)
 
 <video width="100%" controls>
-  <source src="../assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.mp4" type="video/mp4">
+  <source src="/posts/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 ---
 
 ### 4. JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast
-*   **Target Environment:** v1.48.0[cite: 4, 5]
-*   **Execution Method:** **Technical Audit (Manual)**[cite: 5]
-*   **Summary:** This serves as a regression control test. It shows that internal updates to the **Kernel Binder** in v1.48.0 successfully mitigated the simplest string-based bypasses. The recording documents a `KernelException` failure when attempting the legacy v1.47 bypass, establishing the new baseline[cite: 4, 5].
+*   **Target Environment:** v1.48.0
+*   **Execution Method:** **Technical Audit (Manual)**
+*   **Summary:** Regression test showing that internal updates to the **Kernel Binder** in v1.48.0 mitigated the simplest string-based bypasses, resulting in a `KernelException`.
 
 **Supporting Files:**
-*   [Testing Harness (Program.cs)](../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE-Program.cs)
-*   [Execution Logs (txt)](../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.txt)
-*   [Asciinema Recording (cast)](../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast)
+*   [Source Code Analysis (Program.cs)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE-Program.cs)
+*   [Execution Logs (txt)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.txt)
+*   [Asciinema Recording (cast)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast)
 
 <video width="100%" controls>
-  <source src="../assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.mp4" type="video/mp4">
+  <source src="/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 ---
 
 ### 5. JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast
-*   **Target Environment:** v1.48.0[cite: 6, 7]
-*   **Execution Method:** **Technical Audit (Manual)**[cite: 7]
-*   **Summary:** The definitive zero-day proof for the current framework. This recording proves the system remains vulnerable to **Type Confusion and Late Canonicalization**. By executing six distinct bypass vectors, it confirms the filter evaluates raw input before the plugin "sink" decodes it, leaving the application open to RCE[cite: 6, 7].
+*   **Target Environment:** v1.48.0
+*   **Execution Method:** **Technical Audit (Manual)**
+*   **Summary:** The definitive zero-day proof. Despite binder updates, the system remains vulnerable to **Type Confusion and Late Canonicalization** across six distinct bypass vectors.
 
 **Supporting Files:**
-*   [Testing Harness (Program.cs)](../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF-Program.cs)
-*   [Execution Logs (txt)](../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.txt)
-*   [Asciinema Recording (cast)](../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast)
+*   [Source Code Analysis (Program.cs)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF-Program.cs)
+*   [Execution Logs (txt)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.txt)
+*   [Asciinema Recording (cast)](/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast)
 
 <video width="100%" controls>
-  <source src="../assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.mp4" type="video/mp4">
+  <source src="/posts/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
