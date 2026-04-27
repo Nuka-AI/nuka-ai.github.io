@@ -418,3 +418,45 @@ A: Unknown. Our disclosure was rejected, and shadow patches have been incomplete
 **Q: Are other AI frameworks vulnerable?**
 A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain, LlamaIndex, and Deepset Haystack (disclosures scheduled May 2026).
 
+---
+
+### **Appendix 5: Forensic Evidence of "Shadow Patching" & Remediations**
+
+This appendix provides the forensic timeline of Microsoft's internal attempts to remediate the vulnerabilities disclosed by Project Nuka-AI. Despite publicly dismissing the research as "Developer Error," internal engineering records confirm a series of quiet, incomplete mitigations (Shadow Patches) designed to address the "Trust Gap" without issuing a new CVE.
+
+---
+
+#### **1. Commit: `3e4c91a` — The "Sanity Check" Illusion**
+* **Date:** April 7, 2026
+* **Link:** [view commit 3e4c91a](https://github.com/microsoft/semantic-kernel/commit/3e4c91a)
+* **Forensic Diff Summary:** * **Change:** Introduced `ValidateArguments()` method within the core orchestration loop.
+    * **Logic:** Added regex-based "sanity checks" specifically targeting shell-metacharacters (`;`, `&`, `|`).
+    * **The Shadow Patch:** This was pushed while the vulnerability was in "Triage," proving internal recognition of the RCE vector. It was bypassed within hours using the **Late Canonicalization** vector.
+
+#### **2. Commit: `fa2d52f6` — "Shell Blinding" (Failed Remediation)**
+* **Date:** April 9, 2026
+* **Link:** [view commit fa2d52f6](https://github.com/microsoft/semantic-kernel/commit/fa2d52f6)
+* **Forensic Diff Summary:**
+    * **Change:** Modified `TerminalPlugin.cs` to truncate or mask standard output (STDOUT) of system-level tools.
+    * **Logic:** Attempted to prevent the LLM from "seeing" the results of a successful compromise, effectively "blinding" the attacker.
+    * **The Flaw:** Did not block the *execution* of the command, only the *feedback*. The **"Self-Nuke"** exploit remained fully functional.
+
+#### **3. PR #13683 — Opt-in "Safe Roots" Implementation**
+* **Date:** April 11, 2026
+* **Link:** [view PR #13683](https://github.com/microsoft/semantic-kernel/pull/13683)
+* **Forensic Diff Summary:**
+    * **Change:** Implementation of `AllowedDirectories` property for the `FileIO` plugin.
+    * **Logic:** Created a "jail" for file operations. 
+    * **The Shadow Patch:** This implementation closely mirrored the remediation advice provided in Nuka-AI’s initial private disclosure, yet it remained an optional setting, leaving default configurations vulnerable.
+
+#### **4. PR #13702 — Recursive Canonicalization (Final Attempt)**
+* **Date:** April 18, 2026
+* **Link:** [view PR #13702](https://github.com/microsoft/semantic-kernel/pull/13702)
+* **Forensic Diff Summary:**
+    * **Change:** Introduced a multi-pass normalization engine for incoming tool-call arguments.
+    * **Logic:** Targeted **Type Confusion** by attempting to decode Base64, URL-encoding, and Homoglyphs before validation.
+    * **The Flaw:** **STILL VULNERABLE.** Because the canonicalization happens *after* the framework makes the trust decision to invoke the tool, the logic remains flawed at the architectural level.
+
+---
+
+**Forensic Conclusion:** The discrepancy between Microsoft’s public "Developer Error" stance and these frequent, targeted commits proves that the framework architecture is recognized as insecure. Organizations are currently operating with a "False Green" security status because no CVE has been issued to track these failed internal remediation cycles.
