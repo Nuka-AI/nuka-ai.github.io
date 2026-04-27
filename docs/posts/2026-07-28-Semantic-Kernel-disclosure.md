@@ -185,8 +185,8 @@ Architecture is greater than implementation. Flaws in architecture cannot be sim
 ### About Project Nuka-AI
 Project Nuka-AI is an independent research initiative focused on identifying systemic architectural risks in AI orchestration frameworks. Led by **Jeff Ponte (CISSP, CCSP, CEH)**, the project combines over a decade of enterprise software development and cloud security operations experience to ensure the AI revolution is built on secure foundations. 
 
-**Contact:** research@jdp-security.com  
-**Full Disclosure & PoC:** [https://jdp-security.com/nuka-ai-001](https://jdp-security.com/nuka-ai-001)
+**Contact: Nuka.AI@proton.me
+
 
 ---
 
