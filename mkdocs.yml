@@ -38,7 +38,7 @@ nav:
   - Home: index.md
   - Research Logs: 
     - Overview: posts/init.md
-    - April 23 Disclosure: posts/2026-07-14-initial-disclosure.md
+    - April 23 Disclosure: posts/2026-07-28-Semantic-Kernel-disclosure.md
 
 extra:
   social:
