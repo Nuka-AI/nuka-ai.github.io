@@ -6,6 +6,8 @@ title: Initial Research Disclosure
 
 ---
 
+![Hero](../assets/nuka-ai-sk-logo.png)
+
 # WHITE PAPER | NUKA-AI-2026-001
 ## The Orchestration Trust Gap: Day-Zero Bypasses in Microsoft Semantic Kernel and Agent Framework 1.0
 
