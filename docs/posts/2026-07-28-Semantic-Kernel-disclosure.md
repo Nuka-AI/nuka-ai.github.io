@@ -335,8 +335,8 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 ---
 
 ### 3. JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast
-*   **Target Environment:** v1.47.0[cite: 2, 3]
-*   **Execution Method:** **Technical Audit (Manual)**[cite: 3]
+*   **Target Environment:** v1.47.0
+*   **Execution Method:** **Technical Audit (Manual)**
 *   **Summary:** Documents the **Type Confusion** flaw by manually invoking the kernel with various payloads. It shows the filter failing when the malicious path is wrapped in a non-string data type.
 
 **Supporting Files:**
