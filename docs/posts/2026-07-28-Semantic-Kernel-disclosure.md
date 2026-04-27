@@ -1,6 +1,6 @@
 ---
 date: 2026-04-28
-title: Initial Research Disclosure
+title:  Microsoft's Semantic Kernel - The Cracked Kernel
 ---
 > **⚠️ CRITICAL ADVISORY:** If you are running **Microsoft Semantic Kernel (.NET SDK) version 1.48.0 or below**, or the newly released **Agent Framework 1.0**, your environment is currently operating with an unmitigated RCE entry point. This paper demonstrates active bypasses against Microsoft's official remediation for CVE-2026-25592. Users are strongly advised to implement the manual `NukaSecurityFilter` outlined in Appendix 1 immediately.
 
