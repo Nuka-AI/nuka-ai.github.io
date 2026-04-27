@@ -306,9 +306,9 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 *   **Summary:** This recording demonstrates a successful autonomous exploit on a modern version of the SDK. The Researcher provides a natural language prompt, and the LLM independently executes the tool call to overwrite `Program.cs`.
 
 **Supporting Files:**
-*   [Exploit Harness (Program.cs)](/assets/SK/Microsoft_SK_1.74_Nuke_Proof-Program.cs)
-*   [Execution Logs (txt)](/assets/SK/Microsoft_SK_1.74_Nuke_Proof.txt)
-*   [Asciinema Recording (cast)](/assets/SK/Microsoft_SK_1.74_Nuke_Proof.cast)
+*   [Exploit Harness (Program.cs)](/assets/SK/Microsoft_SK_1.74_Nuke_Proof-Program.cs) 
+*   [Execution Logs (txt)](/assets/SK/Microsoft_SK_1.74_Nuke_Proof.txt) 
+*   [Asciinema Recording (cast)](/assets/SK/Microsoft_SK_1.74_Nuke_Proof.cast) 
 
 <video width="100%" controls>
   <source src="/assets/SK/Microsoft_SK_1.74_Nuke_Proof.mp4" type="video/mp4">
@@ -323,9 +323,9 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 *   **Summary:** This demonstration targets the v1.47.0 release following initial hardening. It proves the LLM successfully bypasses security boundaries to verify RCE/Integrity failure.
 
 **Supporting Files:**
-*   [Exploit Harness (Program.cs)](/assets/SK/Microsoft_SK_1.47_Hardened_Bypass-Program.cs)
-*   [Execution Logs (txt)](/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.txt)
-*   [Asciinema Recording (cast)](/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.cast)
+*   [Exploit Harness (Program.cs)](/assets/SK/Microsoft_SK_1.47_Hardened_Bypass-Program.cs) 
+*   [Execution Logs (txt)](/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.txt) 
+*   [Asciinema Recording (cast)](/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.cast) 
 
 <video width="100%" controls>
   <source src="/assets/SK/Microsoft_SK_1.47_Hardened_Bypass.mp4" type="video/mp4">
@@ -340,9 +340,9 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 *   **Summary:** Documents the **Type Confusion** flaw by manually invoking the kernel with various payloads. It shows the filter failing when the malicious path is wrapped in a non-string data type.
 
 **Supporting Files:**
-*   [Exploit Harness (Program.cs)](/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2-Program.cs)
-*   [Execution Logs (txt)](/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.txt)
-*   [Asciinema Recording (cast)](/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast)
+*   [Exploit Harness (Program.cs)](/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2-Program.cs) 
+*   [Execution Logs (txt)](/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.txt) 
+*   [Asciinema Recording (cast)](/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.cast) 
 
 <video width="100%" controls>
   <source src="/assets/SK/JDP_Security_Series_NukaAI_v1.47-CVE-2026-25592-BYPASS-2.mp4" type="video/mp4">
@@ -357,9 +357,9 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 *   **Summary:** Regression test showing that internal updates to the **Kernel Binder** in v1.48.0 mitigated the simplest string-based bypasses, resulting in a `KernelException`.
 
 **Supporting Files:**
-*   [Exploit Harness (Program.cs)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE-Program.cs)
-*   [Execution Logs (txt)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.txt)
-*   [Asciinema Recording (cast)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast)
+*   [Exploit Harness (Program.cs)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE-Program.cs) 
+*   [Execution Logs (txt)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.txt) 
+*   [Asciinema Recording (cast)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.cast) 
 
 <video width="100%" controls>
   <source src="/assets/SK/JDP_Security_Series_NukaAI_v1.48-BREAKING_CHANGE.mp4" type="video/mp4">
@@ -374,9 +374,9 @@ This section serves as the forensic "receipts" for the Project Nuka-AI disclosur
 *   **Summary:** The definitive zero-day proof. Despite binder updates, the system remains vulnerable to **Type Confusion and Late Canonicalization** across six distinct bypass vectors.
 
 **Supporting Files:**
-*   [Exploit Harness (Program.cs)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF-Program.cs)
-*   [Execution Logs (txt)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.txt)
-*   [Asciinema Recording (cast)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast)
+*   [Exploit Harness (Program.cs)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF-Program.cs) 
+*   [Execution Logs (txt)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.txt) 
+*   [Asciinema Recording (cast)](/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.cast) 
 
 <video width="100%" controls>
   <source src="/assets/SK/JDP_Security_Series_NukaAI_v1.48-ZERO_DAY_PROOF.mp4" type="video/mp4">
