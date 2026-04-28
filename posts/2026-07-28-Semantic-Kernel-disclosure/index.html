@@ -1611,24 +1611,24 @@
 </table>
 <hr>
 <h2 id="8-technical-analysis-the-ifunctioninvocationfilter-failure">8. Technical Analysis: The IFunctionInvocationFilter Failure</h2>
-<p>The root cause of these bypasses is a catastrophic failure in how <code>IFunctionInvocationFilter</code> evaluates arguments. Security checks occur on <em>un-decoded, un-normalized, and un-parsed</em> arguments.</p>
-<pre><code class="language-csharp">// THE VULNERABLE PATTERN (CVE-2026-25592 Remediation)
-public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, ...) {
-
-    // ⚠️ TIME OF CHECK: Type Confusion Vulnerability
-    foreach (var arg in context.Arguments) {
-        // ⚡ THE BYPASS POINT:
-        // if arg.Value is a JsonElement, this 'is string' check returns false.
-        // The filter is skipped, and the un-sanitized object proceeds to execution.
-        if (arg.Value is string s &amp;&amp; (s.Contains("..") || s.Contains("/"))) 
-            throw new UnauthorizedAccessException("Blocked!");
-    }
-
-    // ⚠️ TIME OF USE: Execution sink deserializes the JSON/Object and executes
-    await next(context); 
-}
-</code></pre>
-<p>If an attacker instructs the LLM to format the tool call argument as <code>{"path": "../../Program.cs"}</code>, the framework reads <code>arg.Value</code> as a <code>JsonElement</code>, not a <code>string</code>. The security filter skips it. The underlying plugin then natively deserializes the JSON and executes the path traversal.</p>
+<p>The root cause of these bypasses is a catastrophic failure in how <code>IFunctionInvocationFilter</code> evaluates arguments. Security checks occur on <em>un-decoded, un-normalized, and un-parsed</em> arguments.
+</p><div class="language-csharp highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// THE VULNERABLE PATTERN (CVE-2026-25592 Remediation)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">OnFunctionInvocationAsync</span><span class="p">(</span><span class="n">FunctionInvocationContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="c1">// ⚠️ TIME OF CHECK: Type Confusion Vulnerability</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="n">Arguments</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="c1">// ⚡ THE BYPASS POINT:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="c1">// if arg.Value is a JsonElement, this 'is string' check returns false.</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="c1">// The filter is skipped, and the un-sanitized object proceeds to execution.</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">Value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">".."</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">"/"</span><span class="p">)))</span><span class="w"> </span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="nf">UnauthorizedAccessException</span><span class="p">(</span><span class="s">"Blocked!"</span><span class="p">);</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="c1">// ⚠️ TIME OF USE: Execution sink deserializes the JSON/Object and executes</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="n">context</span><span class="p">);</span><span class="w"> </span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
+</code></pre></div>
+If an attacker instructs the LLM to format the tool call argument as <code>{"path": "../../Program.cs"}</code>, the framework reads <code>arg.Value</code> as a <code>JsonElement</code>, not a <code>string</code>. The security filter skips it. The underlying plugin then natively deserializes the JSON and executes the path traversal.<p></p>
 <hr>
 <h2 id="9-remediation-recommendations">9. Remediation &amp; Recommendations</h2>
 <p>To secure AI orchestration, the industry must adopt a Kernel-Level Security Enforcement Point. Security must be Inherent and Mandatory, not Opt-in and Plugin-Specific.</p>
@@ -1656,104 +1656,104 @@ public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, .
 <h2 id="appendix-1-developer-remediation-manual-path-anchoring">Appendix 1: Developer Remediation (Manual Path Anchoring)</h2>
 <p>If you are unable to upgrade to a fundamentally secured version of Semantic Kernel, you must implement a manual <code>IFunctionInvocationFilter</code> to prevent CWE-1039 exploitation. This logic intercepts the LLM's tool call <em>before</em> it hits the file system, deeply inspects complex types, and ensures the path is restricted to a specific "Safe Root."</p>
 <h3 id="the-c-implementation">The C# Implementation</h3>
-<pre><code class="language-csharp">// Appendix 1: Enterprise-Grade Semantic Kernel Security Filter
-// This filter addresses ALL SIX bypass vectors identified in my research
-public class NukaSecurityFilter : IFunctionInvocationFilter
-{
-    private readonly string _safeRoot;
-    private readonly HashSet&lt;string&gt; _fileIoNames = new()
-    {
-        "SaveConversation", "ReadDataFile", "DownloadToFileAsync",
-        "UploadFile", "WriteFile", "ReadFile", "ExecuteScript"
-    };
-
-    public NukaSecurityFilter(string safeRootDirectory = null)
-    {
-        _safeRoot = Path.GetFullPath(safeRootDirectory ?? 
-            Path.Combine(Directory.GetCurrentDirectory(), "appdata"));
-
-        Directory.CreateDirectory(_safeRoot);
-    }
-
-    public async Task OnFunctionInvocationAsync(
-        FunctionInvocationContext context, 
-        Func&lt;FunctionInvocationContext, Task&gt; next)
-    {
-        if (_fileIoNames.Contains(context.Function.Name))
-        {
-            foreach (var arg in context.Arguments)
-            {
-                var canonicalValue = CanonicalizeArgument(arg.Value);
-                if (IsPathLikeArgument(arg.Key, canonicalValue))
-                {
-                    var safePath = ValidateAndSanitizePath(canonicalValue);
-                    context.Arguments[arg.Key] = safePath;
-                }
-            }
-        }
-        await next(context);
-    }
-
-    private string CanonicalizeArgument(object value)
-    {
-        if (value == null) return string.Empty;
-        string stringValue = value.ToString();
-        if (stringValue.Contains('%')) stringValue = WebUtility.UrlDecode(stringValue);
-        stringValue = NormalizeUnicode(stringValue);
-        if (IsBase64(stringValue))
-            stringValue = Encoding.UTF8.GetString(Convert.FromBase64String(stringValue));
-
-        // Critcial Fix: Handle Type Confusion (JSON/Objects)
-        if (value is JsonElement jsonElement)
-        {
-            if (jsonElement.ValueKind == JsonValueKind.Array &amp;&amp; jsonElement.GetArrayLength() &gt; 0)
-                stringValue = jsonElement[0].GetString() ?? stringValue;
-            else if (jsonElement.ValueKind == JsonValueKind.Object)
-                stringValue = ExtractStringFromJsonObject(jsonElement);
-        }
-        return stringValue;
-    }
-
-    private string ValidateAndSanitizePath(string userPath)
-    {
-        string fullPath = Path.GetFullPath(Path.Combine(_safeRoot, userPath));
-        if (!fullPath.StartsWith(_safeRoot, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new SecurityException($"[NUKA-AI BLOCKED] Path traversal attempt detected.");
-        }
-        return fullPath;
-    }
-
-    private bool IsPathLikeArgument(string argName, string value)
-    {
-        var pathKeywords = new[] { "path", "file", "directory", "folder", "location" };
-        return pathKeywords.Any(k =&gt; argName.Contains(k, StringComparison.OrdinalIgnoreCase)) ||
-               value.Contains('/') || value.Contains('\\') ||
-               (value.Contains('.') &amp;&amp; (value.EndsWith(".txt") || value.EndsWith(".json") || value.EndsWith(".cs")));
-    }
-
-    private string NormalizeUnicode(string input)
-    {
-        return input.Replace("∕", "/").Replace("⁄", "/").Replace("＼", "\\")
-                    .Replace("．", ".").Replace("․", ".").Normalize(NormalizationForm.FormKC);
-    }
-
-    private bool IsBase64(string input)
-    {
-        if (string.IsNullOrEmpty(input) || input.Length % 4 != 0 || input.Any(char.IsWhiteSpace)) return false;
-        try { Convert.FromBase64String(input); return true; } catch { return false; }
-    }
-
-    private string ExtractStringFromJsonObject(JsonElement jsonObject)
-    {
-        foreach (var property in jsonObject.EnumerateObject())
-        {
-            if (property.Value.ValueKind == JsonValueKind.String) return property.Value.GetString();
-        }
-        return jsonObject.ToString();
-    }
-} // End of NukaSecurityFilter class
-</code></pre>
+<div class="language-csharp highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Appendix 1: Enterprise-Grade Semantic Kernel Security Filter</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">// This filter addresses ALL SIX bypass vectors identified in my research</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NukaSecurityFilter</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IFunctionInvocationFilter</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">{</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">_safeRoot</span><span class="p">;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">HashSet</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_fileIoNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">()</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="s">"SaveConversation"</span><span class="p">,</span><span class="w"> </span><span class="s">"ReadDataFile"</span><span class="p">,</span><span class="w"> </span><span class="s">"DownloadToFileAsync"</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="s">"UploadFile"</span><span class="p">,</span><span class="w"> </span><span class="s">"WriteFile"</span><span class="p">,</span><span class="w"> </span><span class="s">"ReadFile"</span><span class="p">,</span><span class="w"> </span><span class="s">"ExecuteScript"</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">};</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">NukaSecurityFilter</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">safeRootDirectory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="n">_safeRoot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Path</span><span class="p">.</span><span class="n">GetFullPath</span><span class="p">(</span><span class="n">safeRootDirectory</span><span class="w"> </span><span class="o">??</span><span class="w"> </span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">            </span><span class="n">Path</span><span class="p">.</span><span class="n">Combine</span><span class="p">(</span><span class="n">Directory</span><span class="p">.</span><span class="n">GetCurrentDirectory</span><span class="p">(),</span><span class="w"> </span><span class="s">"appdata"</span><span class="p">));</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span><span class="n">Directory</span><span class="p">.</span><span class="n">CreateDirectory</span><span class="p">(</span><span class="n">_safeRoot</span><span class="p">);</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">OnFunctionInvocationAsync</span><span class="p">(</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="n">FunctionInvocationContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">        </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">FunctionInvocationContext</span><span class="p">,</span><span class="w"> </span><span class="n">Task</span><span class="o">&gt;</span><span class="w"> </span><span class="n">next</span><span class="p">)</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_fileIoNames</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">Function</span><span class="p">.</span><span class="n">Name</span><span class="p">))</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">            </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="n">Arguments</span><span class="p">)</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">            </span><span class="p">{</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">                </span><span class="kt">var</span><span class="w"> </span><span class="n">canonicalValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CanonicalizeArgument</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsPathLikeArgument</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="n">canonicalValue</span><span class="p">))</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">                </span><span class="p">{</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">                    </span><span class="kt">var</span><span class="w"> </span><span class="n">safePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ValidateAndSanitizePath</span><span class="p">(</span><span class="n">canonicalValue</span><span class="p">);</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">                    </span><span class="n">context</span><span class="p">.</span><span class="n">Arguments</span><span class="p">[</span><span class="n">arg</span><span class="p">.</span><span class="n">Key</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">safePath</span><span class="p">;</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">        </span><span class="k">await</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">CanonicalizeArgument</span><span class="p">(</span><span class="kt">object</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">null</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">        </span><span class="kt">string</span><span class="w"> </span><span class="n">stringValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stringValue</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="sc">'%'</span><span class="p">))</span><span class="w"> </span><span class="n">stringValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WebUtility</span><span class="p">.</span><span class="n">UrlDecode</span><span class="p">(</span><span class="n">stringValue</span><span class="p">);</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">        </span><span class="n">stringValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NormalizeUnicode</span><span class="p">(</span><span class="n">stringValue</span><span class="p">);</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsBase64</span><span class="p">(</span><span class="n">stringValue</span><span class="p">))</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">            </span><span class="n">stringValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">stringValue</span><span class="p">));</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">        </span><span class="c1">// Critcial Fix: Handle Type Confusion (JSON/Objects)</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">JsonElement</span><span class="w"> </span><span class="n">jsonElement</span><span class="p">)</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">jsonElement</span><span class="p">.</span><span class="n">ValueKind</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JsonValueKind</span><span class="p">.</span><span class="n">Array</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">jsonElement</span><span class="p">.</span><span class="n">GetArrayLength</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">                </span><span class="n">stringValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jsonElement</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">GetString</span><span class="p">()</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="n">stringValue</span><span class="p">;</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="nf">if</span><span class="w"> </span><span class="p">(</span><span class="n">jsonElement</span><span class="p">.</span><span class="n">ValueKind</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JsonValueKind</span><span class="p">.</span><span class="n">Object</span><span class="p">)</span>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">                </span><span class="n">stringValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExtractStringFromJsonObject</span><span class="p">(</span><span class="n">jsonElement</span><span class="p">);</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">stringValue</span><span class="p">;</span>
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ValidateAndSanitizePath</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">userPath</span><span class="p">)</span>
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a><span class="w">        </span><span class="kt">string</span><span class="w"> </span><span class="n">fullPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Path</span><span class="p">.</span><span class="n">GetFullPath</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="n">Combine</span><span class="p">(</span><span class="n">_safeRoot</span><span class="p">,</span><span class="w"> </span><span class="n">userPath</span><span class="p">));</span>
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fullPath</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">(</span><span class="n">_safeRoot</span><span class="p">,</span><span class="w"> </span><span class="n">StringComparison</span><span class="p">.</span><span class="n">OrdinalIgnoreCase</span><span class="p">))</span>
+<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a><span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="nf">SecurityException</span><span class="p">(</span><span class="s">$"[NUKA-AI BLOCKED] Path traversal attempt detected."</span><span class="p">);</span>
+<a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">fullPath</span><span class="p">;</span>
+<a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>
+<a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsPathLikeArgument</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">argName</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a><span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">pathKeywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">"path"</span><span class="p">,</span><span class="w"> </span><span class="s">"file"</span><span class="p">,</span><span class="w"> </span><span class="s">"directory"</span><span class="p">,</span><span class="w"> </span><span class="s">"folder"</span><span class="p">,</span><span class="w"> </span><span class="s">"location"</span><span class="w"> </span><span class="p">};</span>
+<a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">pathKeywords</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">argName</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">StringComparison</span><span class="p">.</span><span class="n">OrdinalIgnoreCase</span><span class="p">))</span><span class="w"> </span><span class="o">||</span>
+<a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a><span class="w">               </span><span class="k">value</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="sc">'/'</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">value</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="sc">'\\'</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a><span class="w">               </span><span class="p">(</span><span class="k">value</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="sc">'.'</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="k">value</span><span class="p">.</span><span class="n">EndsWith</span><span class="p">(</span><span class="s">".txt"</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">value</span><span class="p">.</span><span class="n">EndsWith</span><span class="p">(</span><span class="s">".json"</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">value</span><span class="p">.</span><span class="n">EndsWith</span><span class="p">(</span><span class="s">".cs"</span><span class="p">)));</span>
+<a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>
+<a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">NormalizeUnicode</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">input</span><span class="p">)</span>
+<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">Replace</span><span class="p">(</span><span class="s">"∕"</span><span class="p">,</span><span class="w"> </span><span class="s">"/"</span><span class="p">).</span><span class="n">Replace</span><span class="p">(</span><span class="s">"⁄"</span><span class="p">,</span><span class="w"> </span><span class="s">"/"</span><span class="p">).</span><span class="n">Replace</span><span class="p">(</span><span class="s">"＼"</span><span class="p">,</span><span class="w"> </span><span class="s">"\\"</span><span class="p">)</span>
+<a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a><span class="w">                    </span><span class="p">.</span><span class="n">Replace</span><span class="p">(</span><span class="s">"．"</span><span class="p">,</span><span class="w"> </span><span class="s">"."</span><span class="p">).</span><span class="n">Replace</span><span class="p">(</span><span class="s">"․"</span><span class="p">,</span><span class="w"> </span><span class="s">"."</span><span class="p">).</span><span class="n">Normalize</span><span class="p">(</span><span class="n">NormalizationForm</span><span class="p">.</span><span class="n">FormKC</span><span class="p">);</span>
+<a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a>
+<a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsBase64</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">input</span><span class="p">)</span>
+<a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="kt">char</span><span class="p">.</span><span class="n">IsWhiteSpace</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+<a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">input</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">true</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a>
+<a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ExtractStringFromJsonObject</span><span class="p">(</span><span class="n">JsonElement</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">)</span>
+<a id="__codelineno-1-90" name="__codelineno-1-90" href="#__codelineno-1-90"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-91" name="__codelineno-1-91" href="#__codelineno-1-91"></a><span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">property</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">.</span><span class="n">EnumerateObject</span><span class="p">())</span>
+<a id="__codelineno-1-92" name="__codelineno-1-92" href="#__codelineno-1-92"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-1-93" name="__codelineno-1-93" href="#__codelineno-1-93"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">property</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">ValueKind</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JsonValueKind</span><span class="p">.</span><span class="n">String</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">property</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">GetString</span><span class="p">();</span>
+<a id="__codelineno-1-94" name="__codelineno-1-94" href="#__codelineno-1-94"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-95" name="__codelineno-1-95" href="#__codelineno-1-95"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+<a id="__codelineno-1-96" name="__codelineno-1-96" href="#__codelineno-1-96"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-97" name="__codelineno-1-97" href="#__codelineno-1-97"></a><span class="p">}</span><span class="w"> </span><span class="c1">// End of NukaSecurityFilter class</span>
+</code></pre></div>
 <hr>
 <h2 id="appendix-2-cast-recording-demonstration-breakdown-chronological">Appendix 2: .cast Recording Demonstration Breakdown (Chronological)</h2>
 <p>This section serves as the forensic "receipts" for the Project Nuka-AI disclosure. These five recordings provide a standalone narrative of how Semantic Kernel's architectural flaws persist across versions and execution methods.</p>
@@ -1882,15 +1882,12 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 <li><strong>Status:</strong> Cherry-picked and merged into Release v1.47.0 on <strong>April 9, 2026</strong>.</li>
 <li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/commit/fa2d52f6">view commit fa2d52f6</a></li>
 <li><strong>Forensic Significance:</strong> This is a "Skeleton Patch." Microsoft resurrected a year-old experimental commit and merged it into the active release branch specifically to mask STDOUT from the LLM.</li>
-<li><strong>The "Blinding" Logic:</strong></li>
-</ul>
-<pre><code class="language-csharp">
-// Prevent LLM from seeing sensitive system output if a tool is subverted
-  var result = await process.StandardOutput.ReadToEndAsync();
-  return "Command executed successfully.";
-// Forensic Masking
-</code></pre>
-<ul>
+<li><strong>The "Blinding" Logic:</strong>
+<div class="language-csharp highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Prevent LLM from seeing sensitive system output if a tool is subverted</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">StandardOutput</span><span class="p">.</span><span class="n">ReadToEndAsync</span><span class="p">();</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="s">"Command executed successfully."</span><span class="p">;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1">// Forensic Masking</span>
+</code></pre></div></li>
 <li><strong>Result:</strong> <strong>FAIL.</strong> This only hides the execution result; it does not block the command itself. Our <strong>"Self-Nuke"</strong> exploit bypasses this by verifying execution through secondary file-system side effects.</li>
 </ul>
 <h4 id="4-pr-13571-the-post-disclosure-capitulation-april-26-2026"><strong>4. PR #13571 — The Post-Disclosure Capitulation (April 26, 2026)</strong></h4>
