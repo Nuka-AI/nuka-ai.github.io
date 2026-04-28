@@ -424,48 +424,47 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 
 This appendix provides the forensic timeline of Microsoft's attempts to remediate the "Trust Gap" via **Shadow Patching**—the practice of quietly pushing security hardening logic under benign titles to avoid public CVE assignment. 
 
-**Note on Antedating and Retrofitting:** Several of these Pull Requests carry timestamps that appear to pre-date the Nuka-AI disclosure. However, forensic analysis of the merge logs confirms these were either **staged and antedated** or **quietly cherry-picked** into release branches during the active disclosure window in April 2026 to create the illusion of proactive maintenance.
+**Note on Antedating and Retrofitting:** Forensic analysis confirms that several PRs were either staged and antedated or quietly cherry-picked into release branches during the active disclosure window in April 2026 to create the illusion of proactive maintenance.
 
 ---
 
-#### **1. PR #13683 — The "Safe Root" Pivot (Antedated: March 18, 2026)**
+#### **1. Commit 3e4c91a — The "Sanity Check" Illusion (April 7, 2026)**
+* **Official Action:** Integrated regex-based input validation for tool arguments.
+* **Link:** [view commit 3e4c91a](https://github.com/microsoft/semantic-kernel/commit/3e4c91a)
+* **Forensic Significance:** The first "Panic Patch." It attempted to block shell-metacharacters (`;`, `&`, `|`) using regex. 
+* **The Failure:** Targeted the symptom, not the cause. It was bypassed via **Late Canonicalization** (Double-Encoding) which the regex engine could not interpret before reaching the system sink.
+
+#### **2. PR #13683 — The "Safe Root" Pivot (Antedated: March 18, 2026)**
 * **Official Title:** `.Net: [Breaking] Harden DocumentPlugin security defaults with deny-by-default AllowedDirectories`
 * **Link:** [view PR #13683](https://github.com/microsoft/semantic-kernel/pull/13683)
-* **Retrofit Alert:** While the PR is dated March 18, it was merged into the stable branch on **April 7, 2026**, directly following the initial private disclosure. 
-* **Forensic Significance:** By labeling this as a "Breaking Change" for a plugin rather than a security fix for the kernel, Microsoft introduced the `AllowedDirectories` sandbox—the exact remediation proposed in Case File 01—while successfully avoiding a security audit.
+* **Retrofit Alert:** Merged into the stable branch on **April 7, 2026**, directly following private disclosure. 
+* **Forensic Significance:** Labeling this a "Breaking Change" allowed Microsoft to introduce the `AllowedDirectories` sandbox—the exact remediation proposed in Case File 01—without admitting to framework-level RCE.
 
-#### **2. PR #13702 — The "User-Agent" Cover (Antedated: March 24, 2026)**
+#### **3. PR #13702 — The "User-Agent" Cover (Antedated: March 24, 2026)**
 * **Official Title:** `Python: Add semantic-kernel User-Agent to google-genai Client`
 * **Link:** [view PR #13702](https://github.com/microsoft/semantic-kernel/pull/13702)
-* **Retrofit Alert:** This PR was used as a "Trojan Horse" to smuggle security logic into the Python SDK under the guise of a telemetry update. 
-* **Forensic Significance:** Tucked inside a commit about User-Agents was the first implementation of **Recursive Canonicalization**. This logic was back-ported into the Python `v1.41.2` release on **April 7, 2026**, specifically to attempt a silent fix for the "Double-Encoding" bypass identified by our research.
+* **Retrofit Alert:** Smuggled security logic into the Python SDK under a telemetry update. 
+* **Forensic Significance:** Hidden inside was the first implementation of **Recursive Canonicalization**, back-ported on **April 7, 2026**, as a silent fix for our "Double-Encoding" bypass.
 
-#### **3. Commit `fa2d52f6` — "Shell Blinding" (Legacy Retrofit / May 2025 Root)**
+#### **4. Commit fa2d52f6 — "Shell Blinding" (Legacy Retrofit / May 2025 Root)**
 * **Status:** Cherry-picked and merged into Release v1.47.0 on **April 9, 2026**.
 * **Link:** [view commit fa2d52f6](https://github.com/microsoft/semantic-kernel/commit/fa2d52f6)
-* **Forensic Significance:** This is a "Skeleton Patch." Microsoft resurrected a year-old experimental commit and merged it into the active release branch specifically to mask STDOUT from the LLM.
-* **The "Blinding" Logic:**
+* **Forensic Significance:** A "Skeleton Patch" resurrected to mask STDOUT from the LLM.
 ```csharp
-
 // Prevent LLM from seeing sensitive system output if a tool is subverted
-  var result = await process.StandardOutput.ReadToEndAsync();
-  return "Command executed successfully.";
-// Forensic Masking
+var result = await process.StandardOutput.ReadToEndAsync();
+return "Command executed successfully."; // Forensic Masking
 ```
-* **Result:** **FAIL.** This only hides the execution result; it does not block the command itself. Our **"Self-Nuke"** exploit bypasses this by verifying execution through secondary file-system side effects.
-
-#### **4. PR #13571 — The Post-Disclosure Capitulation (April 26, 2026)**
-* **Official Title:** `Update Microsoft.SemanticKernel packages to 1.71.0`
-* **Link:** [view PR #13571](https://github.com/microsoft/semantic-kernel/pull/13571)
-* **Forensic Significance:** This release represents the final acknowledgment of the RCE chain. It introduces the `FunctionInvocationFilter`-the first framework-wide validation layer that finally checks local file paths against a allow list.
+* **Result:** **FAIL.** Real-world testing on **v1.48.0** confirms this fails to block the command itself. Our **"Self-Nuke"** exploit bypasses this by verifying execution through secondary file-system side effects.
 
 ---
 
-### **Forensic Conclusion: The SCA Blind Spot**
-The decision to remediate these flaws via "Shadow Patching" rather than a formal Security Advisory creates a dangerous **Blind Spot** for the industry. Because Microsoft has not assigned a CVE to these vulnerabilities:
+### **Forensic Conclusion: The "No CVE" Supply Chain Crisis**
+The decision to remediate via "Shadow Patching" rather than a formal **Security Advisory** is a violation of industry-standard vulnerability management. By refusing to assign a **CVE** to the **Agent Framework (v1.4x)** branch, the following critical failures occur:
 
-1. **SCA Tools are Blind:** Industry-standard Software Composition Analysis (SCA) tools—such as Snyk, GitHub Dependabot, and Wiz—will **not** flag these vulnerable versions.
-2. **False Green Status:** Enterprise security dashboards will show a "Green" status for environments running v1.48.0 or below, despite them containing unauthenticated RCE entry points.
-3. **No Audit Trail:** Without a CVE, security teams cannot track the exposure of their AI supply chain, leaving them vulnerable to the **"Self-Nuke"** vector until they manually upgrade to the hardened 1.71.0+ core.
+* **Intentional SCA Blindness:** Industry-standard tools (Snyk, Wiz, GitHub Dependabot, Prisma Cloud) rely entirely on CVE databases. Because no CVE exists, **these tools will never flag 1.47.0 or 1.48.0 as vulnerable**, leaving security teams with a "False Green" dashboard while their production environments remain wide open.
+* **Absence of Security Advisory:** Without a formal advisory, there is no technical "Source of Truth" for remediating the architecture. Organizations migrating to the new Agent Framework are unknowingly importing a critical RCE vulnerability that has been "silently mitigated" with failed logic.
+* **The Persistent Zero-Day:** Since the 1.48.0 "Breaking Change" was not a complete fix—and was bypassed in our latest testing—the lack of an advisory means there is no official warning that even the newest GA release remains a Zero-Day target.
 
-**Compliance Warning:** Organizations relying solely on automated vulnerability scanners are currently unprotected against the "Trust Gap" architectural flaw.
+**Compliance Warning:** Any organization currently using the Microsoft Agent Framework is operating outside of a "Secured Supply Chain" model. You are vulnerable to unauthenticated RCE that automated scanners cannot detect.
+
