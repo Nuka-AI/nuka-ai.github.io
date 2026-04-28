@@ -128,7 +128,8 @@ The following timeline details the alarming discrepancy between Microsoft’s pu
 | **March 24** | **Initial Disclosure** | Full-chain RCE reported via MSRC. PoC `.CAST` recordings provided showing complete host takeover. |
 | **April 3** | **Agent Framework 1.0 Launch** | **VULNERABLE.** Product launched while disclosure was in triage. Inherits the exact "Trust Gap" and CWE-1039 flaws from SK. |
 | **April 7** | **The GA Bridge (v1.47.0)** | **VULNERABLE.** Commit `3e4c91a` adds "Sanity Checking." Microsoft markets "Enhanced Safety" while the core flaw remains. |
-| **April 8** | **Official Rejection** | MSRC closes case as "Developer Error." Claims framework has no responsibility for tool-call sanitization. |
+| **April 8 (02:01 ET)** | **Public Release** | v1.41.2 goes live. Fixes are now public but uncredited. |
+| **April 8 (16:07 ET)** | **Official Rejection** | MSRC closes case as "Developer Error." Claims framework has no responsibility for tool-call sanitization. |
 | **April 9** | **Failed Shadow Patch #1** | **VULNERABLE.** Commit `fa2d52f6` ("Shell Blinding") masks output but fails to block Path Traversal. Bypass demonstrated same day. |
 | **April 11** | **Architectural Overhaul** | **INCOMPLETE.** PR #13683 implements `AllowedDirectories` (Safe Roots) exactly as recommended by my research. However, implementation remains opt-in. |
 | **April 18** | **Canonicalization Fix** | **INCOMPLETE.** PR #13702 introduces Recursive Canonicalization designed to close Base64/Encoding bypasses. |
