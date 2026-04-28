@@ -445,11 +445,13 @@ This appendix provides the forensic timeline of Microsoft's attempts to remediat
 * **Link:** [view commit fa2d52f6](https://github.com/microsoft/semantic-kernel/commit/fa2d52f6)
 * **Forensic Significance:** This is a "Skeleton Patch." Microsoft resurrected a year-old experimental commit and merged it into the active release branch specifically to mask STDOUT from the LLM.
 * **The "Blinding" Logic:**
-  ```csharp
-  // Prevent LLM from seeing sensitive system output if a tool is subverted
+```csharp
+
+// Prevent LLM from seeing sensitive system output if a tool is subverted
   var result = await process.StandardOutput.ReadToEndAsync();
-  return "Command executed successfully."; // Forensic Masking
-  ```
+  return "Command executed successfully.";
+// Forensic Masking
+```
 * **Result:** **FAIL.** This only hides the execution result; it does not block the command itself. Our **"Self-Nuke"** exploit bypasses this by verifying execution through secondary file-system side effects.
 
 #### **4. PR #13571 — The Post-Disclosure Capitulation (April 26, 2026)**
