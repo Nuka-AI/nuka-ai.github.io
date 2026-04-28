@@ -23,7 +23,7 @@ title:  Microsoft's Semantic Kernel - The Cracked Kernel
 ---
 
 ## Executive Summary
-This white paper documents a catastrophic architectural flaw in Microsoft’s Semantic Kernel (SK) framework, the premier orchestration layer for .NET-based AI agents. Our research reveals a fundamental **"Trust Gap"** where the framework treats stochastic, untrusted Large Language Model (LLM) output as deterministic, high-privilege system commands.
+This white paper documents a catastrophic architectural flaw in Microsoft’s Semantic Kernel (SK) framework, the premier orchestration layer for .NET-based AI agents. My research reveals a fundamental **"Trust Gap"** where the framework treats stochastic, untrusted Large Language Model (LLM) output as deterministic, high-privilege system commands.
 
 This oversight culminates in a full-chain Remote Code Execution (RCE) vulnerability driven by **CWE-1039 (Insecure Automated Optimizations)**. I demonstrate how an AI agent can be manipulated into overwriting its own host application's source code (internally tracked as the "Self-Nuke" vector).
 
@@ -176,7 +176,7 @@ To secure AI orchestration, the industry must adopt a Kernel-Level Security Enfo
 ---
 
 ## 10. Conclusion: A Call for Architectural Accountability
-This disclosure is more than just a technical flaw—it is a warning sign for the entire AI industry. As we rush to deploy increasingly autonomous AI agents via Semantic Kernel and Agent Framework 1.0, we are repeating the security mistakes of earlier computing eras. 
+This disclosure is more than just a technical flaw-it is a warning sign for the entire AI industry. As we rush to deploy increasingly autonomous AI agents via Semantic Kernel and Agent Framework 1.0, we are repeating the security mistakes of earlier computing eras. 
 
 Microsoft's reliance on superficial string filtering proves a fundamental misunderstanding of the threat model. LLM output is untrusted input. 
 
