@@ -1462,7 +1462,7 @@
 <strong>CWE Chain:</strong> CWE-1039 → CWE-22 → CWE-94  </p>
 <hr>
 <h2 id="executive-summary">Executive Summary</h2>
-<p>This white paper documents a catastrophic architectural flaw in Microsoft’s Semantic Kernel (SK) framework, the premier orchestration layer for .NET-based AI agents. Our research reveals a fundamental <strong>"Trust Gap"</strong> where the framework treats stochastic, untrusted Large Language Model (LLM) output as deterministic, high-privilege system commands.</p>
+<p>This white paper documents a catastrophic architectural flaw in Microsoft’s Semantic Kernel (SK) framework, the premier orchestration layer for .NET-based AI agents. My research reveals a fundamental <strong>"Trust Gap"</strong> where the framework treats stochastic, untrusted Large Language Model (LLM) output as deterministic, high-privilege system commands.</p>
 <p>This oversight culminates in a full-chain Remote Code Execution (RCE) vulnerability driven by <strong>CWE-1039 (Insecure Automated Optimizations)</strong>. I demonstrate how an AI agent can be manipulated into overwriting its own host application's source code (internally tracked as the "Self-Nuke" vector).</p>
 <p>Crucially, my forensic analysis spanning versions 1.47.0 through 1.48.0 proves that Microsoft's previous attempts to secure the framework have failed. I am disclosing <strong>six independent Day-Zero bypass vectors</strong> that completely evade the official patch issued for the February 6th Path Traversal vulnerability (<strong>CVE-2026-25592</strong>). This research proves that the current framework security model is architecturally unsound, relying on siloed, cosmetic filters rather than foundational security principles like mandatory input canonicalization.</p>
 <hr>
@@ -1646,7 +1646,7 @@ If an attacker instructs the LLM to format the tool call argument as <code>{"pat
 </ul>
 <hr>
 <h2 id="10-conclusion-a-call-for-architectural-accountability">10. Conclusion: A Call for Architectural Accountability</h2>
-<p>This disclosure is more than just a technical flaw—it is a warning sign for the entire AI industry. As we rush to deploy increasingly autonomous AI agents via Semantic Kernel and Agent Framework 1.0, we are repeating the security mistakes of earlier computing eras. </p>
+<p>This disclosure is more than just a technical flaw-it is a warning sign for the entire AI industry. As we rush to deploy increasingly autonomous AI agents via Semantic Kernel and Agent Framework 1.0, we are repeating the security mistakes of earlier computing eras. </p>
 <p>Microsoft's reliance on superficial string filtering proves a fundamental misunderstanding of the threat model. LLM output is untrusted input. </p>
 <p>Architecture is greater than implementation. Flaws in architecture cannot be simply patched with regex; they must be redesigned from the ground up. Until orchestration frameworks embrace Zero-Trust principles, the "Agentic AI" revolution remains a critical liability for the enterprise.</p>
 <h3 id="about-project-nuka-ai">About Project Nuka-AI</h3>
