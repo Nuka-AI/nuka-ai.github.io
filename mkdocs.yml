@@ -50,3 +50,12 @@ extra:
       link: mailto:JDP.sec@proton.me
     - icon: fontawesome/brands/mastodon
       link: https://infosec.exchange/@nuka_ai
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
