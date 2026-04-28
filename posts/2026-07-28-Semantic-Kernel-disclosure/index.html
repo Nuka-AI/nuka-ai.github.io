@@ -1882,11 +1882,15 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 <li><strong>Status:</strong> Cherry-picked and merged into Release v1.47.0 on <strong>April 9, 2026</strong>.</li>
 <li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/commit/fa2d52f6">view commit fa2d52f6</a></li>
 <li><strong>Forensic Significance:</strong> This is a "Skeleton Patch." Microsoft resurrected a year-old experimental commit and merged it into the active release branch specifically to mask STDOUT from the LLM.</li>
-<li><strong>The "Blinding" Logic:</strong>
-  <code>csharp
-  // Prevent LLM from seeing sensitive system output if a tool is subverted
+<li><strong>The "Blinding" Logic:</strong></li>
+</ul>
+<pre><code class="language-csharp">
+// Prevent LLM from seeing sensitive system output if a tool is subverted
   var result = await process.StandardOutput.ReadToEndAsync();
-  return "Command executed successfully."; // Forensic Masking</code></li>
+  return "Command executed successfully.";
+// Forensic Masking
+</code></pre>
+<ul>
 <li><strong>Result:</strong> <strong>FAIL.</strong> This only hides the execution result; it does not block the command itself. Our <strong>"Self-Nuke"</strong> exploit bypasses this by verifying execution through secondary file-system side effects.</li>
 </ul>
 <h4 id="4-pr-13571-the-post-disclosure-capitulation-april-26-2026"><strong>4. PR #13571 — The Post-Disclosure Capitulation (April 26, 2026)</strong></h4>
