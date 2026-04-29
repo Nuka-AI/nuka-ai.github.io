@@ -444,7 +444,8 @@ This appendix provides the forensic timeline of Microsoft's attempts to remediat
 * **Official Title:** `Python: Improves the robustness of filename handling`
 * **Internal Development Title:** `Python: Prevent LLM-controlled filename path traversal attack`
 * **Link:** [view PR #13643](https://github.com/microsoft/semantic-kernel/pull/13643)
-* **Forensic Significance:** This is the primary location of the "Shadow Patch." By rebranding an **"Attack Prevention"** fix as a **"Robustness"** improvement, Microsoft intentionally masked a CVSS 10.0 risk. This PR introduced the recursive canonicalization logic required to mitigate the path traversal bypasses identified by Project Nuka-AI.
+* **Forensic Significance:** This is the primary location of the "Shadow Patch" logic that was subsequently mirrored across the ecosystem. By rebranding an **"Attack Prevention"** fix as a **"Robustness"** improvement in the Python repository, Microsoft established the pattern for the silent remediations observed in the .NET SDK versions 1.47.0 and 1.48.0.
+* **Cross-SDK Observation:** While the PR title specifically references Python, the recursive canonicalization and path-cleansing logic introduced here represent the architectural "blueprint" Microsoft used to quietly harden the .NET Kernel Binder. This confirms a centralized, intentional effort to mitigate the RCE risk without triggering a new CVE for the .NET framework.
 
 #### **4. Commit fa2d52f6 — "Shell Blinding" (Legacy Retrofit / May 2025 Root)**
 * **Status:** Cherry-picked and merged into Release v1.47.0 on **April 9, 2026**.
