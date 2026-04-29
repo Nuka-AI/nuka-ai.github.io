@@ -73,7 +73,7 @@ To comprehend the severity of these vulnerabilities, one must understand how Sem
 Our research highlights that Semantic Kernel is currently exposed to two distinct, highly critical attack vectors.
 
 *   **Vulnerability A: The CVE-2026-25592 Day-Zero Bypasses**
-    On February 6th, Microsoft released a patch for a known path traversal vulnerability. This patch focused on filtering the string arguments passed to plugins. Our research confirms this patch is structurally flawed because it fails to account for complex data types and LLM translation capabilities.
+    On February 6th, Microsoft released a patch for a known path traversal vulnerability. This patch focused on filtering the string arguments passed to plugins. My research confirms this patch is structurally flawed because it fails to account for complex data types and LLM translation capabilities.
 *   **Vulnerability B: The CWE-1039 Auto-Invocation Flaw**
     Even if standard prompt filters are active, the framework's architecture allows the AI to autonomously generate malicious payloads that execute directly against the host OS via `ToolCallBehavior.AutoInvokeKernelFunctions`.
 
@@ -86,9 +86,9 @@ We conceptualize the application’s security boundary as a house with three dis
 *   **The Defense:** Regex-based filters designed to block literal `../` strings in user input. 
 *   **Status: Bypassed.** This is a cosmetic defense. Attackers easily defeat it by instructing the LLM to construct the malicious string dynamically in memory, rather than providing it in the prompt.
 
-### 4.2 The Kitchen Door (LLM Translation, TOCTOU, and Type Confusion)
+### 4.2 The Kitchen Door (LLM Translation and Type Confusion)
 *   **The Defense:** Standard string evaluation on LLM arguments via `IFunctionInvocationFilter` before they hit native code (The core mechanic of the CVE-2026-25592 patch).
-*   **Status: Systemically Bypassed.** The framework evaluates arguments by checking if they are dangerous strings. However, if the LLM outputs a Base64 string, or structures the path inside a JSON array, the framework's `arg is string` evaluation evaluates to `false` or finds no malicious characters. The security filter waves it through. Once inside the execution sink, the underlying plugin deserializes the JSON or decodes the string and executes the payload. This is a fatal Time-of-Check to Time-of-Use (TOCTOU) vulnerability driven by Type Confusion.
+*   **Status: Systemically Bypassed.** The framework evaluates arguments by checking if they are dangerous strings (e.g., arg is string). However, if the LLM structures the path inside a JSON array or Object, the evaluation returns false, and the security filter is skipped entirely. Once inside the execution sink, the underlying plugin deserializes the object and executes the payload. This is a fatal Type Confusion vulnerability where security checks are performed on the raw input type rather than the final resolved object.
 
 ### 4.3 The Garage Door: The CWE-1039 Auto-Invocation Architectural Flaw
 *   **The Defense:** Trust.
@@ -127,12 +127,12 @@ The following timeline details the alarming discrepancy between Microsoft’s pu
 | :--- | :--- | :--- |
 | **March 24** | **Initial Disclosure** | Full-chain RCE reported via MSRC. PoC `.CAST` recordings provided showing complete host takeover. |
 | **April 3** | **Agent Framework 1.0 Launch** | **VULNERABLE.** Product launched while disclosure was in triage. Inherits the exact "Trust Gap" and CWE-1039 flaws from SK. |
-| **April 7** | **The GA Bridge (v1.47.0)** | **VULNERABLE.** Commit `3e4c91a` adds "Sanity Checking." Microsoft markets "Enhanced Safety" while the core flaw remains. |
+| **April 7** | **The "Smoking Gun" Rebrand** | **VULNERABLE.** PR `#13643` merged. **Forensic Evidence:** Developed as "Prevent LLM-controlled filename path traversal attack" but renamed to "Improves robustness..." for release. This confirms internal recognition of the RCE risk while publicly denying it. |
 | **April 8 (02:01 ET)** | **Public Release** | v1.41.2 goes live. Fixes are now public but uncredited. |
 | **April 8 (16:07 ET)** | **Official Rejection** | MSRC closes case as "Developer Error." Claims framework has no responsibility for tool-call sanitization. |
 | **April 9** | **Failed Shadow Patch #1** | **VULNERABLE.** Commit `fa2d52f6` ("Shell Blinding") masks output but fails to block Path Traversal. Bypass demonstrated same day. |
-| **April 11** | **Architectural Overhaul** | **INCOMPLETE.** PR #13683 implements `AllowedDirectories` (Safe Roots) exactly as recommended by my research. However, implementation remains opt-in. |
-| **April 18** | **Canonicalization Fix** | **INCOMPLETE.** PR #13702 introduces Recursive Canonicalization designed to close Base64/Encoding bypasses. |
+| **April 11** | **.NET Architectural Shift** | **INCOMPLETE.** PR #13683 implements `AllowedDirectories` (Safe Roots). This "Breaking Change" retrofits the mandatory path anchoring (Safe Roots) required to stop the "Self-Nuke" vector. Status: Opt-in only. |
+| **April 18** | **Python SDK "Telemetry" Bundle** | **INCOMPLETE.** PR #13702. Officially titled as a telemetry update ("Add User-Agent"), but used to bundle final recursive encoding checks for Google AI connectors to close "Double-Encoding" bypasses. |
 | **April 21** | **v1.48.0 Stable Release** | **STILL VULNERABLE.** Testing confirms the "Shadow Patch" in `DocumentPlugin.cs` fails due to siloed logic. All 6 bypasses remain functional. |
 | **April 25** | **Current State** | **CRITICAL.** The framework remains open to RCE. The "Developer Error" stance has resulted in a failed, incomplete internal remediation cycle. |
 
@@ -186,7 +186,7 @@ Architecture is greater than implementation. Flaws in architecture cannot be sim
 ### About Project Nuka-AI
 Project Nuka-AI is an independent research initiative focused on identifying systemic architectural risks in AI orchestration frameworks. Led by **Jeff Ponte (CISSP, CCSP, CEH)**, the project combines over a decade of enterprise software development and cloud security operations experience to ensure the AI revolution is built on secure foundations. 
 
-**Contact: Nuka.AI@proton.me
+**Contact:** Nuka.AI@proton.me
 
 
 ---
@@ -414,7 +414,7 @@ A: Yes. Agent Framework 1.0 inherits Semantic Kernel's orchestration layer and i
 A: Partially. It prevents automated exploitation but manual tool calls remain vulnerable to the 6 bypasses.
 
 **Q: When will Microsoft fix this?**
-A: Unknown. Our disclosure was rejected, and shadow patches have been incomplete.
+A: Unknown. My disclosure was rejected, and shadow patches have been incomplete.
 
 **Q: Are other AI frameworks vulnerable?**
 A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain, LlamaIndex, and Deepset Haystack (disclosures scheduled May 2026).
@@ -441,11 +441,15 @@ This appendix provides the forensic timeline of Microsoft's attempts to remediat
 * **Retrofit Alert:** Merged into the stable branch on **April 7, 2026**, directly following private disclosure. 
 * **Forensic Significance:** Labeling this a "Breaking Change" allowed Microsoft to introduce the `AllowedDirectories` sandbox—the exact remediation proposed in Case File 01—without admitting to framework-level RCE.
 
-#### **3. PR #13702 — The "User-Agent" Cover (Antedated: March 24, 2026)**
-* **Official Title:** `Python: Add semantic-kernel User-Agent to google-genai Client`
-* **Link:** [view PR #13702](https://github.com/microsoft/semantic-kernel/pull/13702)
-* **Retrofit Alert:** Smuggled security logic into the Python SDK under a telemetry update. 
-* **Forensic Significance:** Hidden inside was the first implementation of **Recursive Canonicalization**, back-ported on **April 7, 2026**, as a silent fix for our "Double-Encoding" bypass.
+#### **3. PR #13643 — The "Robustness" Rebrand (April 7, 2026)**
+* **Official Title:** `Python: Improves the robustness of filename handling`
+* **Internal Development Title:** `Python: Prevent LLM-controlled filename path traversal attack`
+* **Link:** [view PR #13643](https://github.com/microsoft/semantic-kernel/pull/13643)
+* **Forensic Significance:** This is the primary location of the "Shadow Patch." By rebranding an **"Attack Prevention"** fix as a **"Robustness"** improvement, Microsoft intentionally masked a CVSS 10.0 risk. This PR introduced the recursive canonicalization logic required to mitigate the path traversal bypasses identified by Project Nuka-AI.
+
+#### **PR #13702 — The Telemetry "Bundle" (April 18, 2026)**
+* **Official Title:** Python: Add semantic-kernel User-Agent to google-genai Client
+* **Forensic Significance:** While earlier drafts of this research misidentified the PR number for the primary canonicalization logic (which lives in #13643), forensic diffs show that #13702 was used to bundle final encoding refinements for Google-specific connectors, following the established pattern of hiding security logic within non-security telemetry updates.
 
 #### **4. Commit fa2d52f6 — "Shell Blinding" (Legacy Retrofit / May 2025 Root)**
 * **Status:** Cherry-picked and merged into Release v1.47.0 on **April 9, 2026**.
@@ -456,7 +460,7 @@ This appendix provides the forensic timeline of Microsoft's attempts to remediat
 var result = await process.StandardOutput.ReadToEndAsync();
 return "Command executed successfully."; // Forensic Masking
 ```
-* **Result:** **FAIL.** Real-world testing on **v1.48.0** confirms this fails to block the command itself. Our **"Self-Nuke"** exploit bypasses this by verifying execution through secondary file-system side effects.
+* **Result:** **FAIL.** Real-world testing on **v1.48.0** confirms this fails to block the command itself. My **"Self-Nuke"** exploit bypasses this by verifying execution through secondary file-system side effects.
 
 ---
 
@@ -465,7 +469,7 @@ The decision to remediate via "Shadow Patching" rather than a formal **Security 
 
 * **Intentional SCA Blindness:** Industry-standard tools (Snyk, Wiz, GitHub Dependabot, Prisma Cloud) rely entirely on CVE databases. Because no CVE exists, **these tools will never flag 1.47.0 or 1.48.0 as vulnerable**, leaving security teams with a "False Green" dashboard while their production environments remain wide open.
 * **Absence of Security Advisory:** Without a formal advisory, there is no technical "Source of Truth" for remediating the architecture. Organizations migrating to the new Agent Framework are unknowingly importing a critical RCE vulnerability that has been "silently mitigated" with failed logic.
-* **The Persistent Zero-Day:** Since the 1.48.0 "Breaking Change" was not a complete fix—and was bypassed in our latest testing—the lack of an advisory means there is no official warning that even the newest GA release remains a Zero-Day target.
+* **The Persistent Zero-Day:** Since the 1.48.0 "Breaking Change" was not a complete fix—and was bypassed in my latest testing—the lack of an advisory means there is no official warning that even the newest GA release remains a Zero-Day target.
 
 **Compliance Warning:** Any organization currently using the Microsoft Agent Framework is operating outside of a "Secured Supply Chain" model. You are vulnerable to unauthenticated RCE that automated scanners cannot detect.
 
