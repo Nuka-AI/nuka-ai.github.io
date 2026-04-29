@@ -588,10 +588,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-the-kitchen-door-llm-translation-toctou-and-type-confusion" class="md-nav__link">
+  <a href="#42-the-kitchen-door-llm-translation-and-type-confusion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2 The Kitchen Door (LLM Translation, TOCTOU, and Type Confusion)
+        4.2 The Kitchen Door (LLM Translation and Type Confusion)
       
     </span>
   </a>
@@ -883,10 +883,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-pr-13702-the-user-agent-cover-antedated-march-24-2026" class="md-nav__link">
+  <a href="#3-pr-13643-the-robustness-rebrand-april-7-2026" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. PR #13702 — The "User-Agent" Cover (Antedated: March 24, 2026)
+        3. PR #13643 — The "Robustness" Rebrand (April 7, 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pr-13702-the-telemetry-bundle-april-18-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PR #13702 — The Telemetry "Bundle" (April 18, 2026)
       
     </span>
   </a>
@@ -1091,10 +1102,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-the-kitchen-door-llm-translation-toctou-and-type-confusion" class="md-nav__link">
+  <a href="#42-the-kitchen-door-llm-translation-and-type-confusion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2 The Kitchen Door (LLM Translation, TOCTOU, and Type Confusion)
+        4.2 The Kitchen Door (LLM Translation and Type Confusion)
       
     </span>
   </a>
@@ -1386,10 +1397,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-pr-13702-the-user-agent-cover-antedated-march-24-2026" class="md-nav__link">
+  <a href="#3-pr-13643-the-robustness-rebrand-april-7-2026" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. PR #13702 — The "User-Agent" Cover (Antedated: March 24, 2026)
+        3. PR #13643 — The "Robustness" Rebrand (April 7, 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pr-13702-the-telemetry-bundle-april-18-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PR #13702 — The Telemetry "Bundle" (April 18, 2026)
       
     </span>
   </a>
@@ -1507,7 +1529,7 @@
 <p>Our research highlights that Semantic Kernel is currently exposed to two distinct, highly critical attack vectors.</p>
 <ul>
 <li><strong>Vulnerability A: The CVE-2026-25592 Day-Zero Bypasses</strong>
-    On February 6th, Microsoft released a patch for a known path traversal vulnerability. This patch focused on filtering the string arguments passed to plugins. Our research confirms this patch is structurally flawed because it fails to account for complex data types and LLM translation capabilities.</li>
+    On February 6th, Microsoft released a patch for a known path traversal vulnerability. This patch focused on filtering the string arguments passed to plugins. My research confirms this patch is structurally flawed because it fails to account for complex data types and LLM translation capabilities.</li>
 <li><strong>Vulnerability B: The CWE-1039 Auto-Invocation Flaw</strong>
     Even if standard prompt filters are active, the framework's architecture allows the AI to autonomously generate malicious payloads that execute directly against the host OS via <code>ToolCallBehavior.AutoInvokeKernelFunctions</code>.</li>
 </ul>
@@ -1519,10 +1541,10 @@
 <li><strong>The Defense:</strong> Regex-based filters designed to block literal <code>../</code> strings in user input. </li>
 <li><strong>Status: Bypassed.</strong> This is a cosmetic defense. Attackers easily defeat it by instructing the LLM to construct the malicious string dynamically in memory, rather than providing it in the prompt.</li>
 </ul>
-<h3 id="42-the-kitchen-door-llm-translation-toctou-and-type-confusion">4.2 The Kitchen Door (LLM Translation, TOCTOU, and Type Confusion)</h3>
+<h3 id="42-the-kitchen-door-llm-translation-and-type-confusion">4.2 The Kitchen Door (LLM Translation and Type Confusion)</h3>
 <ul>
 <li><strong>The Defense:</strong> Standard string evaluation on LLM arguments via <code>IFunctionInvocationFilter</code> before they hit native code (The core mechanic of the CVE-2026-25592 patch).</li>
-<li><strong>Status: Systemically Bypassed.</strong> The framework evaluates arguments by checking if they are dangerous strings. However, if the LLM outputs a Base64 string, or structures the path inside a JSON array, the framework's <code>arg is string</code> evaluation evaluates to <code>false</code> or finds no malicious characters. The security filter waves it through. Once inside the execution sink, the underlying plugin deserializes the JSON or decodes the string and executes the payload. This is a fatal Time-of-Check to Time-of-Use (TOCTOU) vulnerability driven by Type Confusion.</li>
+<li><strong>Status: Systemically Bypassed.</strong> The framework evaluates arguments by checking if they are dangerous strings (e.g., arg is string). However, if the LLM structures the path inside a JSON array or Object, the evaluation returns false, and the security filter is skipped entirely. Once inside the execution sink, the underlying plugin deserializes the object and executes the payload. This is a fatal Type Confusion vulnerability where security checks are performed on the raw input type rather than the final resolved object.</li>
 </ul>
 <h3 id="43-the-garage-door-the-cwe-1039-auto-invocation-architectural-flaw">4.3 The Garage Door: The CWE-1039 Auto-Invocation Architectural Flaw</h3>
 <ul>
@@ -1574,8 +1596,8 @@
 </tr>
 <tr>
 <td style="text-align: left;"><strong>April 7</strong></td>
-<td style="text-align: left;"><strong>The GA Bridge (v1.47.0)</strong></td>
-<td style="text-align: left;"><strong>VULNERABLE.</strong> Commit <code>3e4c91a</code> adds "Sanity Checking." Microsoft markets "Enhanced Safety" while the core flaw remains.</td>
+<td style="text-align: left;"><strong>The "Smoking Gun" Rebrand</strong></td>
+<td style="text-align: left;"><strong>VULNERABLE.</strong> PR <code>#13643</code> merged. <strong>Forensic Evidence:</strong> Developed as "Prevent LLM-controlled filename path traversal attack" but renamed to "Improves robustness..." for release. This confirms internal recognition of the RCE risk while publicly denying it.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>April 8 (02:01 ET)</strong></td>
@@ -1594,13 +1616,13 @@
 </tr>
 <tr>
 <td style="text-align: left;"><strong>April 11</strong></td>
-<td style="text-align: left;"><strong>Architectural Overhaul</strong></td>
-<td style="text-align: left;"><strong>INCOMPLETE.</strong> PR #13683 implements <code>AllowedDirectories</code> (Safe Roots) exactly as recommended by my research. However, implementation remains opt-in.</td>
+<td style="text-align: left;"><strong>.NET Architectural Shift</strong></td>
+<td style="text-align: left;"><strong>INCOMPLETE.</strong> PR #13683 implements <code>AllowedDirectories</code> (Safe Roots). This "Breaking Change" retrofits the mandatory path anchoring (Safe Roots) required to stop the "Self-Nuke" vector. Status: Opt-in only.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>April 18</strong></td>
-<td style="text-align: left;"><strong>Canonicalization Fix</strong></td>
-<td style="text-align: left;"><strong>INCOMPLETE.</strong> PR #13702 introduces Recursive Canonicalization designed to close Base64/Encoding bypasses.</td>
+<td style="text-align: left;"><strong>Python SDK "Telemetry" Bundle</strong></td>
+<td style="text-align: left;"><strong>INCOMPLETE.</strong> PR #13702. Officially titled as a telemetry update ("Add User-Agent"), but used to bundle final recursive encoding checks for Google AI connectors to close "Double-Encoding" bypasses.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>April 21</strong></td>
@@ -1656,7 +1678,7 @@ If an attacker instructs the LLM to format the tool call argument as <code>{"pat
 <p>Architecture is greater than implementation. Flaws in architecture cannot be simply patched with regex; they must be redesigned from the ground up. Until orchestration frameworks embrace Zero-Trust principles, the "Agentic AI" revolution remains a critical liability for the enterprise.</p>
 <h3 id="about-project-nuka-ai">About Project Nuka-AI</h3>
 <p>Project Nuka-AI is an independent research initiative focused on identifying systemic architectural risks in AI orchestration frameworks. Led by <strong>Jeff Ponte (CISSP, CCSP, CEH)</strong>, the project combines over a decade of enterprise software development and cloud security operations experience to ensure the AI revolution is built on secure foundations. </p>
-<p>**Contact: Nuka.AI@proton.me</p>
+<p><strong>Contact:</strong> Nuka.AI@proton.me</p>
 <hr>
 <h2 id="appendix-1-developer-remediation-manual-path-anchoring">Appendix 1: Developer Remediation (Manual Path Anchoring)</h2>
 <p>If you are unable to upgrade to a fundamentally secured version of Semantic Kernel, you must implement a manual <code>IFunctionInvocationFilter</code> to prevent CWE-1039 exploitation. This logic intercepts the LLM's tool call <em>before</em> it hits the file system, deeply inspects complex types, and ensures the path is restricted to a specific "Safe Root."</p>
@@ -1860,7 +1882,7 @@ A: Yes. Agent Framework 1.0 inherits Semantic Kernel's orchestration layer and i
 <p><strong>Q: Does disabling Auto-Invocation fix it?</strong>
 A: Partially. It prevents automated exploitation but manual tool calls remain vulnerable to the 6 bypasses.</p>
 <p><strong>Q: When will Microsoft fix this?</strong>
-A: Unknown. Our disclosure was rejected, and shadow patches have been incomplete.</p>
+A: Unknown. My disclosure was rejected, and shadow patches have been incomplete.</p>
 <p><strong>Q: Are other AI frameworks vulnerable?</strong>
 A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain, LlamaIndex, and Deepset Haystack (disclosures scheduled May 2026).</p>
 <hr>
@@ -1882,12 +1904,17 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 <li><strong>Retrofit Alert:</strong> Merged into the stable branch on <strong>April 7, 2026</strong>, directly following private disclosure. </li>
 <li><strong>Forensic Significance:</strong> Labeling this a "Breaking Change" allowed Microsoft to introduce the <code>AllowedDirectories</code> sandbox—the exact remediation proposed in Case File 01—without admitting to framework-level RCE.</li>
 </ul>
-<h4 id="3-pr-13702-the-user-agent-cover-antedated-march-24-2026"><strong>3. PR #13702 — The "User-Agent" Cover (Antedated: March 24, 2026)</strong></h4>
+<h4 id="3-pr-13643-the-robustness-rebrand-april-7-2026"><strong>3. PR #13643 — The "Robustness" Rebrand (April 7, 2026)</strong></h4>
 <ul>
-<li><strong>Official Title:</strong> <code>Python: Add semantic-kernel User-Agent to google-genai Client</code></li>
-<li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/pull/13702">view PR #13702</a></li>
-<li><strong>Retrofit Alert:</strong> Smuggled security logic into the Python SDK under a telemetry update. </li>
-<li><strong>Forensic Significance:</strong> Hidden inside was the first implementation of <strong>Recursive Canonicalization</strong>, back-ported on <strong>April 7, 2026</strong>, as a silent fix for our "Double-Encoding" bypass.</li>
+<li><strong>Official Title:</strong> <code>Python: Improves the robustness of filename handling</code></li>
+<li><strong>Internal Development Title:</strong> <code>Python: Prevent LLM-controlled filename path traversal attack</code></li>
+<li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/pull/13643">view PR #13643</a></li>
+<li><strong>Forensic Significance:</strong> This is the primary location of the "Shadow Patch." By rebranding an <strong>"Attack Prevention"</strong> fix as a <strong>"Robustness"</strong> improvement, Microsoft intentionally masked a CVSS 10.0 risk. This PR introduced the recursive canonicalization logic required to mitigate the path traversal bypasses identified by Project Nuka-AI.</li>
+</ul>
+<h4 id="pr-13702-the-telemetry-bundle-april-18-2026"><strong>PR #13702 — The Telemetry "Bundle" (April 18, 2026)</strong></h4>
+<ul>
+<li><strong>Official Title:</strong> Python: Add semantic-kernel User-Agent to google-genai Client</li>
+<li><strong>Forensic Significance:</strong> While earlier drafts of this research misidentified the PR number for the primary canonicalization logic (which lives in #13643), forensic diffs show that #13702 was used to bundle final encoding refinements for Google-specific connectors, following the established pattern of hiding security logic within non-security telemetry updates.</li>
 </ul>
 <h4 id="4-commit-fa2d52f6-shell-blinding-legacy-retrofit-may-2025-root"><strong>4. Commit fa2d52f6 — "Shell Blinding" (Legacy Retrofit / May 2025 Root)</strong></h4>
 <ul>
@@ -1898,7 +1925,7 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">StandardOutput</span><span class="p">.</span><span class="n">ReadToEndAsync</span><span class="p">();</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">return</span><span class="w"> </span><span class="s">"Command executed successfully."</span><span class="p">;</span><span class="w"> </span><span class="c1">// Forensic Masking</span>
 </code></pre></div></li>
-<li><strong>Result:</strong> <strong>FAIL.</strong> Real-world testing on <strong>v1.48.0</strong> confirms this fails to block the command itself. Our <strong>"Self-Nuke"</strong> exploit bypasses this by verifying execution through secondary file-system side effects.</li>
+<li><strong>Result:</strong> <strong>FAIL.</strong> Real-world testing on <strong>v1.48.0</strong> confirms this fails to block the command itself. My <strong>"Self-Nuke"</strong> exploit bypasses this by verifying execution through secondary file-system side effects.</li>
 </ul>
 <hr>
 <h3 id="forensic-conclusion-the-no-cve-supply-chain-crisis"><strong>Forensic Conclusion: The "No CVE" Supply Chain Crisis</strong></h3>
@@ -1906,7 +1933,7 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 <ul>
 <li><strong>Intentional SCA Blindness:</strong> Industry-standard tools (Snyk, Wiz, GitHub Dependabot, Prisma Cloud) rely entirely on CVE databases. Because no CVE exists, <strong>these tools will never flag 1.47.0 or 1.48.0 as vulnerable</strong>, leaving security teams with a "False Green" dashboard while their production environments remain wide open.</li>
 <li><strong>Absence of Security Advisory:</strong> Without a formal advisory, there is no technical "Source of Truth" for remediating the architecture. Organizations migrating to the new Agent Framework are unknowingly importing a critical RCE vulnerability that has been "silently mitigated" with failed logic.</li>
-<li><strong>The Persistent Zero-Day:</strong> Since the 1.48.0 "Breaking Change" was not a complete fix—and was bypassed in our latest testing—the lack of an advisory means there is no official warning that even the newest GA release remains a Zero-Day target.</li>
+<li><strong>The Persistent Zero-Day:</strong> Since the 1.48.0 "Breaking Change" was not a complete fix—and was bypassed in my latest testing—the lack of an advisory means there is no official warning that even the newest GA release remains a Zero-Day target.</li>
 </ul>
 <p><strong>Compliance Warning:</strong> Any organization currently using the Microsoft Agent Framework is operating outside of a "Secured Supply Chain" model. You are vulnerable to unauthenticated RCE that automated scanners cannot detect.</p>
 
