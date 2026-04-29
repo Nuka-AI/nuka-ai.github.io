@@ -1882,7 +1882,8 @@ A: Yes. Project Nuka-AI has identified similar architectural flaws in LangChain,
 <li><strong>Official Title:</strong> <code>Python: Improves the robustness of filename handling</code></li>
 <li><strong>Internal Development Title:</strong> <code>Python: Prevent LLM-controlled filename path traversal attack</code></li>
 <li><strong>Link:</strong> <a href="https://github.com/microsoft/semantic-kernel/pull/13643">view PR #13643</a></li>
-<li><strong>Forensic Significance:</strong> This is the primary location of the "Shadow Patch." By rebranding an <strong>"Attack Prevention"</strong> fix as a <strong>"Robustness"</strong> improvement, Microsoft intentionally masked a CVSS 10.0 risk. This PR introduced the recursive canonicalization logic required to mitigate the path traversal bypasses identified by Project Nuka-AI.</li>
+<li><strong>Forensic Significance:</strong> This is the primary location of the "Shadow Patch" logic that was subsequently mirrored across the ecosystem. By rebranding an <strong>"Attack Prevention"</strong> fix as a <strong>"Robustness"</strong> improvement in the Python repository, Microsoft established the pattern for the silent remediations observed in the .NET SDK versions 1.47.0 and 1.48.0.</li>
+<li><strong>Cross-SDK Observation:</strong> While the PR title specifically references Python, the recursive canonicalization and path-cleansing logic introduced here represent the architectural "blueprint" Microsoft used to quietly harden the .NET Kernel Binder. This confirms a centralized, intentional effort to mitigate the RCE risk without triggering a new CVE for the .NET framework.</li>
 </ul>
 <h4 id="4-commit-fa2d52f6-shell-blinding-legacy-retrofit-may-2025-root"><strong>4. Commit fa2d52f6 — "Shell Blinding" (Legacy Retrofit / May 2025 Root)</strong></h4>
 <ul>
