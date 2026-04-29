@@ -132,7 +132,6 @@ The following timeline details the alarming discrepancy between Microsoft’s pu
 | **April 8 (16:07 ET)** | **Official Rejection** | MSRC closes case as "Developer Error." Claims framework has no responsibility for tool-call sanitization. |
 | **April 9** | **Failed Shadow Patch #1** | **VULNERABLE.** Commit `fa2d52f6` ("Shell Blinding") masks output but fails to block Path Traversal. Bypass demonstrated same day. |
 | **April 11** | **.NET Architectural Shift** | **INCOMPLETE.** PR #13683 implements `AllowedDirectories` (Safe Roots). This "Breaking Change" retrofits the mandatory path anchoring (Safe Roots) required to stop the "Self-Nuke" vector. Status: Opt-in only. |
-| **April 18** | **Python SDK "Telemetry" Bundle** | **INCOMPLETE.** PR #13702. Officially titled as a telemetry update ("Add User-Agent"), but used to bundle final recursive encoding checks for Google AI connectors to close "Double-Encoding" bypasses. |
 | **April 21** | **v1.48.0 Stable Release** | **STILL VULNERABLE.** Testing confirms the "Shadow Patch" in `DocumentPlugin.cs` fails due to siloed logic. All 6 bypasses remain functional. |
 | **April 25** | **Current State** | **CRITICAL.** The framework remains open to RCE. The "Developer Error" stance has resulted in a failed, incomplete internal remediation cycle. |
 
@@ -446,10 +445,6 @@ This appendix provides the forensic timeline of Microsoft's attempts to remediat
 * **Internal Development Title:** `Python: Prevent LLM-controlled filename path traversal attack`
 * **Link:** [view PR #13643](https://github.com/microsoft/semantic-kernel/pull/13643)
 * **Forensic Significance:** This is the primary location of the "Shadow Patch." By rebranding an **"Attack Prevention"** fix as a **"Robustness"** improvement, Microsoft intentionally masked a CVSS 10.0 risk. This PR introduced the recursive canonicalization logic required to mitigate the path traversal bypasses identified by Project Nuka-AI.
-
-#### **PR #13702 — The Telemetry "Bundle" (April 18, 2026)**
-* **Official Title:** Python: Add semantic-kernel User-Agent to google-genai Client
-* **Forensic Significance:** While earlier drafts of this research misidentified the PR number for the primary canonicalization logic (which lives in #13643), forensic diffs show that #13702 was used to bundle final encoding refinements for Google-specific connectors, following the established pattern of hiding security logic within non-security telemetry updates.
 
 #### **4. Commit fa2d52f6 — "Shell Blinding" (Legacy Retrofit / May 2025 Root)**
 * **Status:** Cherry-picked and merged into Release v1.47.0 on **April 9, 2026**.
